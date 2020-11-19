@@ -11,7 +11,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    color: color.font,
+    color: color.title,
     fontWeight: 'bold',
     fontSize: 28,
   },
@@ -25,7 +25,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: color.text,
+    color: 'grey',
   },
   link: {
     color: color.linkColor,
