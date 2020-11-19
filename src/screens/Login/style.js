@@ -55,6 +55,7 @@ export default StyleSheet.create({
   },
   info: {
     marginTop: 10,
+    color: 'grey',
   },
   btnWrapper: {
     width: '20%',
@@ -65,5 +66,6 @@ export default StyleSheet.create({
   btnText: {
     textTransform: 'uppercase',
     color: color.btnTextColor,
+    fontWeight: 'bold',
   },
 });
