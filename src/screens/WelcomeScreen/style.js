@@ -26,6 +26,7 @@ export default StyleSheet.create({
   },
   text: {
     color: 'grey',
+    textAlign: 'center',
   },
   link: {
     color: color.linkColor,

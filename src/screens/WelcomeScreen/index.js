@@ -13,12 +13,12 @@ export default function WelcomeScreen() {
       <Image style={styled.image} source={logo} />
       <View style={styled.footer}>
         <View style={styled.textWrapper}>
-          <Text style={styled.text}>Baca </Text>
-          <Text style={styled.link}>Kebijakan Privasi</Text>
-          <Text style={styled.text}> kami. </Text>
-          <Text style={styled.text}>Ketuk "Setuju dan lanjutkan"</Text>
-          <Text style={styled.text}>untuk menerima </Text>
-          <Text style={styled.link}>Ketentuan Layanan</Text>
+          <Text style={styled.text}>
+            Baca
+            <Text style={styled.link}> Kebijakan Privasi </Text>kami. Ketuk
+            "Setuju dan lanjutkan" untuk menerima
+            <Text style={styled.link}> Ketentuan Layanan</Text>{' '}
+          </Text>
         </View>
         <View style={styled.btnWrapper}>
           <Button style={styled.btn} block>
