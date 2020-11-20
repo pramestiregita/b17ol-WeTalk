@@ -25,7 +25,6 @@ export default function ChatBubble({item}) {
 
   return (
     <View key={item.id} style={bubble()}>
-      {console.log(item.content.length)}
       <Text style={styled.content}>{item.content}</Text>
       <Text style={styled.time}>{item.time}</Text>
     </View>

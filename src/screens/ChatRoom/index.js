@@ -75,7 +75,11 @@ export default function ChatRoom() {
   return (
     <View style={styled.parent}>
       <View style={styled.contentWrapper}>
-        <FlatList data={data} renderItem={({item}) => <Bubble item={item} />} />
+        <FlatList
+          data={data}
+          renderItem={({item}) => <Bubble item={item} />}
+          keyExtractor={(item) => item.id.toString()}
+        />
       </View>
 
       <Formik

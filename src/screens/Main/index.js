@@ -12,7 +12,8 @@ import Status from '../Status';
 import Calls from '../Calls';
 import ChatRoom from '../ChatRoom';
 
-import Header from '../../components/ChatHeader';
+import MainHeader from '../../components/MainHeader';
+import ChatHeader from '../../components/ChatHeader';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -47,14 +48,11 @@ export default function Main() {
         <Stack.Navigator>
           <Stack.Screen
             options={{
-              title: 'WeTalk',
               headerStyle: {
                 elevation: 0,
                 backgroundColor: color.header,
               },
-              headerTitleStyle: {
-                color: color.theme,
-              },
+              headerTitle: (props) => <MainHeader {...props} />,
             }}
             name="Main"
             component={Tabs}
@@ -62,7 +60,7 @@ export default function Main() {
 
           <Stack.Screen
             options={{
-              headerTitle: (props) => <Header {...props} />,
+              headerTitle: (props) => <ChatHeader {...props} />,
               headerStyle: {
                 backgroundColor: color.header,
               },
