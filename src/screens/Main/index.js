@@ -14,6 +14,7 @@ import ChatRoom from '../ChatRoom';
 
 import MainHeader from '../../components/MainHeader';
 import ChatHeader from '../../components/ChatHeader';
+import {useSelector} from 'react-redux';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -35,7 +36,8 @@ const Tabs = () => {
 };
 
 export default function Main() {
-  const isLogin = true;
+  const {isLogin} = useSelector((state) => state.auth);
+
   return (
     <NavigationContainer>
       {!isLogin ? (
