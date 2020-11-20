@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconMi from 'react-native-vector-icons/MaterialIcons';
-import {View, Text, TextInput, TouchableOpacity, FlatList} from 'react-native';
+import {View, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import {Formik} from 'formik';
 
 import styled from './style';
