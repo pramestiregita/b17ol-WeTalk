@@ -10,6 +10,9 @@ import Login from '../Login';
 import Chat from '../Chat';
 import Status from '../Status';
 import Calls from '../Calls';
+import ChatRoom from '../ChatRoom';
+
+import Header from '../../components/ChatHeader';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -20,7 +23,7 @@ const Tabs = () => {
       tabBarOptions={{
         labelStyle: {fontWeight: 'bold'},
         indicatorStyle: {backgroundColor: color.theme, height: 3},
-        style: {elevation: 2, backgroundColor: color.title},
+        style: {elevation: 2, backgroundColor: color.header},
         activeTintColor: color.theme,
       }}>
       <Tab.Screen name="Chat" component={Chat} />
@@ -37,21 +40,37 @@ export default function Main() {
       {!isLogin ? (
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
       ) : (
-        <Stack.Navigator
-          screenOptions={{
-            title: 'WeTalk',
-            headerStyle: {
-              elevation: 0,
-              backgroundColor: color.title,
-            },
-            headerTitleStyle: {
-              color: color.theme,
-            },
-          }}>
-          <Stack.Screen name="Main" component={Tabs} />
+        <Stack.Navigator>
+          <Stack.Screen
+            options={{
+              title: 'WeTalk',
+              headerStyle: {
+                elevation: 0,
+                backgroundColor: color.header,
+              },
+              headerTitleStyle: {
+                color: color.theme,
+              },
+            }}
+            name="Main"
+            component={Tabs}
+          />
+
+          <Stack.Screen
+            options={{
+              headerTitle: (props) => <Header {...props} />,
+              headerStyle: {
+                backgroundColor: color.header,
+              },
+              headerTintColor: color.theme,
+            }}
+            name="ChatRoom"
+            component={ChatRoom}
+          />
         </Stack.Navigator>
       )}
     </NavigationContainer>
