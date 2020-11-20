@@ -5,7 +5,7 @@ import {Button} from 'native-base';
 
 import styled from './style';
 
-export default function Login() {
+export default function Login({navigation}) {
   const selectedCountry = {name: 'Indonesia', code: '62'};
   const [phoneNumber, setPhone] = useState(null);
 

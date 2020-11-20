@@ -6,7 +6,7 @@ import styled from './style';
 
 import logo from '../../assets/logo.png';
 
-export default function WelcomeScreen() {
+export default function WelcomeScreen({navigation}) {
   return (
     <View style={styled.parent}>
       <Text style={styled.title}>Selamat Datang di WeTalk</Text>
@@ -21,7 +21,10 @@ export default function WelcomeScreen() {
           </Text>
         </View>
         <View style={styled.btnWrapper}>
-          <Button style={styled.btn} block>
+          <Button
+            onPress={() => navigation.navigate('Login')}
+            style={styled.btn}
+            block>
             <Text style={styled.btnText}>setuju dan lanjutkan</Text>
           </Button>
         </View>
