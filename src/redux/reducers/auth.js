@@ -4,6 +4,7 @@ const initialState = {
   isLoading: false,
   isError: false,
   alertMsg: '',
+  setProfile: false,
 };
 
 export default (state = initialState, action) => {
