@@ -37,7 +37,8 @@ const Tabs = () => {
 };
 
 export default function Main() {
-  const {isLogin, setProfile} = useSelector((state) => state.auth);
+  const {isLogin} = useSelector((state) => state.auth);
+  const {setProfile} = useSelector((state) => state.profile);
 
   return (
     <NavigationContainer>

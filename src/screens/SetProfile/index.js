@@ -1,4 +1,5 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {View, Text, Image, TextInput} from 'react-native';
 import {Button} from 'native-base';
@@ -6,6 +7,7 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 
 import styled from './style';
+import profileAction from '../../redux/actions/profile';
 
 import add from '../../assets/addpict.png';
 
@@ -14,12 +16,14 @@ const profileSchema = Yup.object().shape({
 });
 
 export default function SetProfile() {
+  const dispatch = useDispatch();
+
   const onSubmit = (data) => {
     data = {
       ...data,
       image: null,
     };
-    console.log(data);
+    dispatch(profileAction.setProfile(data));
   };
 
   return (
