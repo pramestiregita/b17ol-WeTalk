@@ -71,7 +71,17 @@ export default function FriendInfo() {
         </Card>
         <Card>
           <List>
-            <Text style={styled.title}>Nomor telepon</Text>
+            <Text style={styled.title}>Info dan nomor telepon</Text>
+            <ListItem>
+              <Left>
+                <View>
+                  <Text style={styled.info}>Ada</Text>
+                  <Text style={styled.info} note>
+                    20 November
+                  </Text>
+                </View>
+              </Left>
+            </ListItem>
             <ListItem>
               <Left>
                 <View>

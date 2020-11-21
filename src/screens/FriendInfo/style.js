@@ -5,6 +5,7 @@ import color from '../../assets/color';
 export default StyleSheet.create({
   parent: {
     flex: 1,
+    paddingBottom: 30,
   },
   headerWrapper: {
     position: 'relative',
