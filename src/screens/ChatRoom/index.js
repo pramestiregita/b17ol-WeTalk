@@ -94,6 +94,7 @@ export default function ChatRoom() {
 
               <TextInput
                 onChangeText={handleChange('content')}
+                onBlur={handleBlur('content')}
                 style={styled.input}
                 placeholder="Ketik pesan"
                 multiline

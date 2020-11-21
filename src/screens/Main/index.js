@@ -13,6 +13,7 @@ import Chat from '../Chat';
 import Status from '../Status';
 import Calls from '../Calls';
 import ChatRoom from '../ChatRoom';
+import FriendInfo from '../FriendInfo';
 
 import MainHeader from '../../components/MainHeader';
 import ChatHeader from '../../components/ChatHeader';
@@ -80,6 +81,16 @@ export default function Main() {
             }}
             name="ChatRoom"
             component={ChatRoom}
+          />
+
+          <Stack.Screen
+            options={{
+              title: '',
+              headerTransparent: true,
+              headerTintColor: 'white',
+            }}
+            name="FriendInfo"
+            component={FriendInfo}
           />
         </Stack.Navigator>
       )}

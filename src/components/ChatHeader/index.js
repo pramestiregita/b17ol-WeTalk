@@ -1,4 +1,5 @@
 import React from 'react';
+import {useNavigation} from '@react-navigation/native';
 import IconMi from 'react-native-vector-icons/MaterialIcons';
 import IconFa from 'react-native-vector-icons/FontAwesome5';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
@@ -9,11 +10,15 @@ import color from '../../assets/color';
 import avatar from '../../assets/avatar.jpg';
 
 export default function ChatHeader() {
+  const navigation = useNavigation();
+
   return (
     <View style={styled.parent}>
       <Thumbnail small source={avatar} />
 
-      <TouchableOpacity style={styled.nameWrapper}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('FriendInfo')}
+        style={styled.nameWrapper}>
         <Text style={styled.name}>Name</Text>
         <Text style={styled.status}>Online</Text>
       </TouchableOpacity>
