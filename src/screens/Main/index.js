@@ -14,6 +14,7 @@ import Status from '../Status';
 import Calls from '../Calls';
 import ChatRoom from '../ChatRoom';
 import FriendInfo from '../FriendInfo';
+import Settings from '../Settings';
 
 import MainHeader from '../../components/MainHeader';
 import ChatHeader from '../../components/ChatHeader';
@@ -74,9 +75,7 @@ export default function Main() {
           <Stack.Screen
             options={{
               headerTitle: (props) => <ChatHeader {...props} />,
-              headerStyle: {
-                backgroundColor: color.header,
-              },
+              headerStyle: {backgroundColor: color.header},
               headerTintColor: color.theme,
             }}
             name="ChatRoom"
@@ -91,6 +90,16 @@ export default function Main() {
             }}
             name="FriendInfo"
             component={FriendInfo}
+          />
+
+          <Stack.Screen
+            options={{
+              title: 'Setelan',
+              headerTintColor: 'white',
+              headerStyle: {backgroundColor: color.header},
+            }}
+            name="Settings"
+            component={Settings}
           />
         </Stack.Navigator>
       )}
