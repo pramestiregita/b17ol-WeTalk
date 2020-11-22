@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconMi from 'react-native-vector-icons/MaterialIcons';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {Text, Thumbnail} from 'native-base';
 
 import styled from './style';
@@ -9,7 +9,7 @@ import color from '../../assets/color';
 
 import avatar from '../../assets/avatar.jpg';
 
-export default function Settings() {
+export default function Settings({navigation}) {
   const list = [
     {
       icon: 'key',
@@ -44,17 +44,19 @@ export default function Settings() {
 
   return (
     <View style={styled.parent}>
-      <View style={styled.header}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('MyProfile')}
+        style={styled.header}>
         <Thumbnail source={avatar} />
         <View style={styled.body}>
           <Text>Name</Text>
           <Text style={styled.note}>Info</Text>
         </View>
         <Icon name="qrcode" size={25} color={color.header} />
-      </View>
+      </TouchableOpacity>
       <View style={styled.divider} />
-      {list.map((i) => (
-        <View style={styled.list}>
+      {list.map((i, o) => (
+        <View key={o} style={styled.list}>
           {i.icon === 'key' ? (
             <Icon
               style={styled.iconList}

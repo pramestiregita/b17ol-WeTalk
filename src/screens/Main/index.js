@@ -15,6 +15,8 @@ import Calls from '../Calls';
 import ChatRoom from '../ChatRoom';
 import FriendInfo from '../FriendInfo';
 import Settings from '../Settings';
+import MyProfile from '../MyProfile';
+import Info from '../Info';
 
 import MainHeader from '../../components/MainHeader';
 import ChatHeader from '../../components/ChatHeader';
@@ -100,6 +102,26 @@ export default function Main() {
             }}
             name="Settings"
             component={Settings}
+          />
+
+          <Stack.Screen
+            options={{
+              title: 'Profil',
+              headerTintColor: 'white',
+              headerStyle: {backgroundColor: color.header},
+            }}
+            name="MyProfile"
+            component={MyProfile}
+          />
+
+          <Stack.Screen
+            options={{
+              title: 'Info',
+              headerTintColor: 'white',
+              headerStyle: {backgroundColor: color.header},
+            }}
+            name="Info"
+            component={Info}
           />
         </Stack.Navigator>
       )}
