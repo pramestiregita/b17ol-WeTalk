@@ -1,12 +1,20 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {View, Text, Image, TextInput, TouchableOpacity} from 'react-native';
+import {
+  Alert,
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import {Button} from 'native-base';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 
-import {API_URL} from '@env';
+import {API_URL, LIMIT_FILE} from '@env';
 
 import styled from './style';
 import profileAction from '../../redux/actions/profile';
@@ -18,8 +26,10 @@ const profileSchema = Yup.object().shape({
 });
 
 export default function SetProfile() {
+  const [imageSource, setImage] = useState(null);
+
   const {token} = useSelector((state) => state.auth);
-  const {data} = useSelector((state) => state.profile);
+  const {data, isSuccess} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
 
@@ -31,14 +41,51 @@ export default function SetProfile() {
     getData();
   }, []);
 
-  const onSubmit = (value) => {
-    console.log(value);
-    // value = {
-    //   ...value,
-    //   image: null,
-    // };
-    // dispatch(profileAction.setProfile(value));
+  const selectImage = () => {
+    const options = {
+      title: 'You can choose one image',
+      maxWidth: 256,
+      maxHeight: 256,
+      storageOptions: {
+        skipBackup: true,
+      },
+      noData: true,
+      mediaType: 'photo',
+    };
+
+    ImagePicker.showImagePicker(options, async (response) => {
+      if (response.didCancel) {
+        Alert.alert("You didn't select an image");
+      } else if (response.error) {
+        Alert.alert('Try again later!');
+      } else if (response.fileSize > LIMIT_FILE) {
+        Alert.alert('File is too big');
+      } else {
+        setImage(response);
+      }
+    });
   };
+
+  const onSubmit = (value) => {
+    const form = new FormData();
+
+    form.append('name', value.name);
+
+    if (imageSource) {
+      form.append('avatar', {
+        uri: imageSource.uri,
+        name: imageSource.fileName,
+        type: imageSource.type,
+      });
+    }
+
+    console.log(form);
+    dispatch(profileAction.setProfile(token, form));
+  };
+
+  useEffect(() => {
+    isSuccess && getData();
+  }, [isSuccess]);
 
   return (
     Object.keys(data).length > 0 && (
@@ -48,17 +95,20 @@ export default function SetProfile() {
         onSubmit={(values) => onSubmit(values)}>
         {({handleBlur, handleChange, handleSubmit, values, errors}) => (
           <View style={styled.parent}>
-            {console.log(data)}
             <View style={styled.contentWrapper}>
               <Text style={styled.title}>Info Profil</Text>
               <Text style={styled.text}>
                 Mohon berikan nama dan foto profil (optional) Anda
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => selectImage()}>
                 <Image
                   style={styled.image}
                   source={
-                    data.avatar ? {uri: API_URL.concat(data.avatar)} : add
+                    data.avatar
+                      ? {uri: API_URL.concat(data.avatar)}
+                      : imageSource
+                      ? {uri: imageSource.uri}
+                      : add
                   }
                 />
               </TouchableOpacity>

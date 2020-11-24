@@ -29,10 +29,25 @@ export default (state = initialState, action) => {
         data: action.payload.data.data,
       };
     }
-    case 'SET_PROFILE': {
+    case 'SET_PROFILE_PENDING': {
       return {
         ...state,
-        data: action.payload,
+        isLoading: true,
+      };
+    }
+    case 'SET_PROFILE_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+    case 'SET_PROFILE_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        isSuccess: true,
         setProfile: true,
       };
     }

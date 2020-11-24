@@ -5,8 +5,8 @@ export default {
     type: 'GET_PROFILE',
     payload: http(token).get('user/profile'),
   }),
-  setProfile: (data) => ({
+  setProfile: (token, data) => ({
     type: 'SET_PROFILE',
-    payload: data,
+    payload: http(token).patch('user/set-profile', data),
   }),
 };
