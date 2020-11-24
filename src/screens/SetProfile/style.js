@@ -23,11 +23,13 @@ export default StyleSheet.create({
   image: {
     width: 100,
     height: 100,
+    borderRadius: 50,
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
+    marginTop: 10,
   },
   input: {
     flex: 1,
