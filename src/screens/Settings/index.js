@@ -1,4 +1,5 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconMi from 'react-native-vector-icons/MaterialIcons';
 import {TouchableOpacity, View} from 'react-native';
@@ -10,6 +11,8 @@ import color from '../../assets/color';
 import avatar from '../../assets/avatar.jpg';
 
 export default function Settings({navigation}) {
+  const dispatch = useDispatch();
+
   const list = [
     {
       icon: 'key',
@@ -78,6 +81,12 @@ export default function Settings({navigation}) {
           </View>
         </View>
       ))}
+      <TouchableOpacity
+        onPress={() => {
+          dispatch({type: 'LOGOUT'});
+        }}>
+        <Text>logout</Text>
+      </TouchableOpacity>
     </View>
   );
 }

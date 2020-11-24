@@ -51,6 +51,9 @@ export default (state = initialState, action) => {
         setProfile: true,
       };
     }
+    case 'LOGOUT': {
+      return initialState;
+    }
     default: {
       return state;
     }
