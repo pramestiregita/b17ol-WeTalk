@@ -1,4 +1,5 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
 import {Button} from 'native-base';
@@ -8,7 +9,6 @@ import * as Yup from 'yup';
 import styled from './style';
 
 import authAction from '../../redux/actions/auth';
-import {useDispatch} from 'react-redux';
 
 const loginSchema = Yup.object().shape({
   phoneNumber: Yup.number().required('Please insert your number'),
@@ -25,7 +25,7 @@ export default function Login() {
         initialValues={{phoneNumber: null}}
         validationSchema={loginSchema}
         onSubmit={(values) => {
-          dispatch(authAction.login(values.phoneNumber));
+          dispatch(authAction.login(values));
         }}>
         {({
           handleBlur,
@@ -66,8 +66,10 @@ export default function Login() {
                   value={values.phoneNumber}
                   onChangeText={handleChange('phoneNumber')}
                   onBlur={handleBlur('phoneNumber')}
+                  onSubmitEditing={handleSubmit}
                   placeholder="nomor telepon"
                   keyboardType="phone-pad"
+                  autoFocus={true}
                 />
               </View>
 

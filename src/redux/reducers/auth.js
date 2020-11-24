@@ -3,29 +3,31 @@ const initialState = {
   isLogin: false,
   isLoading: false,
   isError: false,
-  alertMsg: '',
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case 'LOGIN': {
-      if (action.payload === '085717956854') {
-        return {
-          ...state,
-          token: 'abc',
-          isLogin: true,
-          alertMsg: 'Login successfully',
-        };
-      } else {
-        return {
-          ...state,
-          token: '',
-          isLogin: false,
-          isLoading: false,
-          isError: false,
-          alertMsg: 'Wrong phone number',
-        };
-      }
+    case 'LOGIN_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'LOGIN_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+    case 'LOGIN_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        isLogin: true,
+        token: action.payload.data.token,
+      };
     }
     default: {
       return state;
