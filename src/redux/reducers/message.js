@@ -1,6 +1,8 @@
 const initialState = {
   data: [],
   pageInfo: {},
+  detail: [],
+  detailInfo: {},
   isLoading: false,
   isError: false,
 };
@@ -27,6 +29,28 @@ export default (state = initialState, action) => {
         isError: false,
         data: action.payload.data.data,
         pageInfo: action.payload.data.pageInfo,
+      };
+    }
+    case 'GET_MSG_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'GET_MSG_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+    case 'GET_MSG_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        detail: action.payload.data.data,
+        detailInfo: action.payload.data.pageInfo,
       };
     }
     default: {

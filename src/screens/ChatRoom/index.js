@@ -1,14 +1,31 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconMi from 'react-native-vector-icons/MaterialIcons';
 import {View, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import {Formik} from 'formik';
 
 import styled from './style';
+import messageAction from '../../redux/actions/message';
 
 import Bubble from '../../components/ChatBubble';
 
-export default function ChatRoom() {
+export default function ChatRoom({route}) {
+  const {id} = route.params;
+  const {token} = useSelector((state) => state.auth);
+  const {detail} = useSelector((state) => state.message);
+
+  const dispatch = useDispatch();
+  const input = useRef();
+
+  const getDetail = async () => {
+    await dispatch(messageAction.getMsg(token, id));
+  };
+
+  useEffect(() => {
+    getDetail();
+  }, []);
+
   const data = [
     {
       id: 1,
@@ -76,7 +93,7 @@ export default function ChatRoom() {
     <View style={styled.parent}>
       <View style={styled.contentWrapper}>
         <FlatList
-          data={data}
+          data={detail}
           renderItem={({item}) => <Bubble item={item} />}
           keyExtractor={(item) => item.id.toString()}
         />
@@ -84,7 +101,10 @@ export default function ChatRoom() {
 
       <Formik
         initialValues={{content: ''}}
-        onSubmit={(values) => console.log(values)}>
+        onSubmit={(values) => {
+          console.log(values);
+          input.current.clear();
+        }}>
         {({handleBlur, handleChange, handleSubmit, handleReset, values}) => (
           <View style={styled.footerWrapper}>
             <View style={styled.inputWrapper}>
@@ -93,8 +113,10 @@ export default function ChatRoom() {
               </View>
 
               <TextInput
+                ref={input}
                 onChangeText={handleChange('content')}
                 onBlur={handleBlur('content')}
+                onSubmitEditing={handleSubmit}
                 style={styled.input}
                 placeholder="Ketik pesan"
                 multiline
