@@ -22,7 +22,6 @@ export default function Chat() {
 
   return (
     <View style={styled.parent}>
-      {console.log(data)}
       <FlatList
         data={data}
         renderItem={({item}) => <List item={item} />}
