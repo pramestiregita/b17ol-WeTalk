@@ -1,16 +1,25 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Thumbnail, Text, List, ListItem, Left, Body, Right} from 'native-base';
+import moment from 'moment';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import avatar from '../../assets/avatar.jpg';
 
 export default function ChatList({item}) {
+  const {userId} = useSelector((state) => state.profile);
+  const friendId =
+    item.sender.id !== userId ? item.sender.id : item.recipient.id;
+
   const navigation = useNavigation();
 
   return (
-    <List key={item.id + item.name}>
-      <ListItem onPress={() => navigation.navigate('ChatRoom')} avatar>
+    <List key={item.id}>
+      <ListItem
+        onPress={() => navigation.navigate('ChatRoom', {id: friendId})}
+        avatar>
         <Left>
           <TouchableOpacity>
             <Thumbnail source={avatar} />
@@ -18,12 +27,19 @@ export default function ChatList({item}) {
         </Left>
 
         <Body>
-          <Text style={styled.name}>{item.name}</Text>
-          <Text style={styled.text}>{item.text}</Text>
+          {item.sender.id !== userId ? (
+            <Text style={styled.name}>{item.sender.name}</Text>
+          ) : (
+            <Text style={styled.name}>{item.recipient.name}</Text>
+          )}
+          <Text style={styled.text}>{item.content}</Text>
         </Body>
 
-        <Right>
-          <Text note>{item.time}</Text>
+        <Right style={styled.info}>
+          <Text note>{moment(item.createdAt).format('hh:MM')}</Text>
+          {item.sender.id === userId ? (
+            <Icon name="check" size={20} color="grey" />
+          ) : null}
         </Right>
       </ListItem>
     </List>
@@ -36,5 +52,8 @@ const styled = StyleSheet.create({
   },
   text: {
     fontSize: 13,
+  },
+  info: {
+    justifyContent: 'space-between',
   },
 });

@@ -1,5 +1,6 @@
 const initialState = {
   data: {},
+  userId: 0,
   setProfile: false,
   isLoading: false,
   isError: false,
@@ -27,6 +28,7 @@ export default (state = initialState, action) => {
         isLoading: false,
         isError: false,
         data: action.payload.data.data,
+        userId: action.payload.data.data.id,
       };
     }
     case 'SET_PROFILE_PENDING': {
