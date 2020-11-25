@@ -75,6 +75,9 @@ export default (state = initialState, action) => {
         isSuccess: true,
       };
     }
+    case 'LOGOUT': {
+      return initialState;
+    }
     default: {
       return state;
     }
