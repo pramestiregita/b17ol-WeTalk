@@ -5,21 +5,32 @@ import IconFa from 'react-native-vector-icons/FontAwesome5';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {Text, Thumbnail} from 'native-base';
 
+import {API_URL} from '@env';
+
 import color from '../../assets/color';
 
 import avatar from '../../assets/avatar.jpg';
 
-export default function ChatHeader() {
+export default function ChatHeader({item}) {
   const navigation = useNavigation();
 
   return (
     <View style={styled.parent}>
-      <Thumbnail small source={avatar} />
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styled.goBack}>
+        <IconFa name="arrow-left" size={20} color={color.theme} />
+      </TouchableOpacity>
+
+      <Thumbnail
+        small
+        source={item.avatar ? {uri: API_URL.concat(item.avatar)} : avatar}
+      />
 
       <TouchableOpacity
         onPress={() => navigation.navigate('FriendInfo')}
         style={styled.nameWrapper}>
-        <Text style={styled.name}>Name</Text>
+        <Text style={styled.name}>{item.name}</Text>
         <Text style={styled.status}>Online</Text>
       </TouchableOpacity>
 
@@ -51,8 +62,13 @@ export default function ChatHeader() {
 
 const styled = StyleSheet.create({
   parent: {
-    flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
+    height: 60,
+    backgroundColor: color.header,
+  },
+  goBack: {
+    width: 50,
     alignItems: 'center',
   },
   nameWrapper: {

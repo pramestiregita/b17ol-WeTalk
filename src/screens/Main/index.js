@@ -19,7 +19,6 @@ import MyProfile from '../MyProfile';
 import Info from '../Info';
 
 import MainHeader from '../../components/MainHeader';
-import ChatHeader from '../../components/ChatHeader';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
@@ -76,9 +75,7 @@ export default function Main() {
 
           <Stack.Screen
             options={{
-              headerTitle: (props) => <ChatHeader {...props} />,
-              headerStyle: {backgroundColor: color.header},
-              headerTintColor: color.theme,
+              headerShown: false,
             }}
             name="ChatRoom"
             component={ChatRoom}

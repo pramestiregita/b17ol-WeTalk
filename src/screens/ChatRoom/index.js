@@ -7,19 +7,23 @@ import {Formik} from 'formik';
 
 import styled from './style';
 import messageAction from '../../redux/actions/message';
+import friendAction from '../../redux/actions/friend';
 
+import Header from '../../components/ChatHeader';
 import Bubble from '../../components/ChatBubble';
 
 export default function ChatRoom({route}) {
-  const {id} = route.params;
+  const {id: friendId} = route.params;
   const {token} = useSelector((state) => state.auth);
   const {detail, isSuccess} = useSelector((state) => state.message);
+  const {detail: friend} = useSelector((state) => state.friend);
 
   const dispatch = useDispatch();
   const input = useRef();
 
   const getDetail = async () => {
-    await dispatch(messageAction.getMsg(token, id));
+    await dispatch(messageAction.getMsg(token, friendId));
+    await dispatch(friendAction.getFriend(token, friendId));
   };
 
   const getData = async () => {
@@ -31,7 +35,7 @@ export default function ChatRoom({route}) {
   }, []);
 
   const send = async (value) => {
-    await dispatch(messageAction.sendMsg(token, id, value));
+    await dispatch(messageAction.sendMsg(token, friendId, value));
   };
 
   useEffect(() => {
@@ -105,77 +109,85 @@ export default function ChatRoom({route}) {
   ];
 
   return (
-    <View style={styled.parent}>
-      <View style={styled.contentWrapper}>
-        <FlatList
-          inverted
-          data={detail}
-          renderItem={({item}) => <Bubble item={item} />}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
+    <>
+      <Header item={friend} />
+      <View style={styled.parent}>
+        <View style={styled.contentWrapper}>
+          <FlatList
+            inverted
+            data={detail}
+            renderItem={({item}) => <Bubble item={item} />}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        </View>
 
-      <Formik
-        initialValues={{content: ''}}
-        onSubmit={(values) => {
-          send(values);
-          input.current.clear();
-        }}>
-        {({handleBlur, handleChange, handleSubmit, values}) => (
-          <View style={styled.footerWrapper}>
-            <View style={styled.inputWrapper}>
-              <View style={styled.iconWrapper}>
-                <Icon style={styled.icon} name="laugh" size={20} color="grey" />
-              </View>
-
-              <TextInput
-                ref={input}
-                onChangeText={handleChange('content')}
-                onBlur={handleBlur('content')}
-                // onSubmitEditing={handleSubmit}
-                style={styled.input}
-                placeholder="Ketik pesan"
-                multiline
-                value={values.content}
-              />
-
-              <View style={[styled.iconWrapper, styled.file]}>
-                <Icon
-                  style={styled.icon}
-                  name="paperclip"
-                  size={20}
-                  color="grey"
-                />
-              </View>
-
-              {values.content === '' ? (
-                <View style={[styled.iconWrapper, styled.file]}>
+        <Formik
+          initialValues={{content: ''}}
+          onSubmit={(values) => {
+            send(values);
+            input.current.clear();
+          }}>
+          {({handleBlur, handleChange, handleSubmit, values}) => (
+            <View style={styled.footerWrapper}>
+              <View style={styled.inputWrapper}>
+                <View style={styled.iconWrapper}>
                   <Icon
                     style={styled.icon}
-                    name="camera"
+                    name="laugh"
                     size={20}
                     color="grey"
                   />
                 </View>
-              ) : null}
-            </View>
 
-            <View>
-              {values.content === '' ? (
-                <TouchableOpacity style={styled.actionWrapper}>
-                  <IconMi name="mic" size={25} color="white" />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  style={styled.actionWrapper}>
-                  <IconMi name="send" size={20} color="white" />
-                </TouchableOpacity>
-              )}
+                <TextInput
+                  ref={input}
+                  onChangeText={handleChange('content')}
+                  onBlur={handleBlur('content')}
+                  // onSubmitEditing={handleSubmit}
+                  style={styled.input}
+                  placeholder="Ketik pesan"
+                  multiline
+                  value={values.content}
+                />
+
+                <View style={[styled.iconWrapper, styled.file]}>
+                  <Icon
+                    style={styled.icon}
+                    name="paperclip"
+                    size={20}
+                    color="grey"
+                  />
+                </View>
+
+                {values.content === '' ? (
+                  <View style={[styled.iconWrapper, styled.file]}>
+                    <Icon
+                      style={styled.icon}
+                      name="camera"
+                      size={20}
+                      color="grey"
+                    />
+                  </View>
+                ) : null}
+              </View>
+
+              <View>
+                {values.content === '' ? (
+                  <TouchableOpacity style={styled.actionWrapper}>
+                    <IconMi name="mic" size={25} color="white" />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    onPress={handleSubmit}
+                    style={styled.actionWrapper}>
+                    <IconMi name="send" size={20} color="white" />
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
-          </View>
-        )}
-      </Formik>
-    </View>
+          )}
+        </Formik>
+      </View>
+    </>
   );
 }
