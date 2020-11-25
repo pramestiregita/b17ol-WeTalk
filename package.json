@@ -1,5 +1,5 @@
 {
-  "name": "chatapp",
+  "name": "WeTalk",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -32,6 +32,7 @@
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.15.0",
     "react-native-tab-view": "^2.15.2",
+    "react-native-text-input-mask": "^2.0.0",
     "react-native-vector-icons": "^7.1.0",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
