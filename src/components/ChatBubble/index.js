@@ -32,7 +32,9 @@ export default function ChatBubble({item}) {
   return (
     <View key={item.id} style={bubble()}>
       <Text style={styled.content}>{item.content}</Text>
-      <Text style={styled.time}>{moment(item.createdAt).format('hh:mm')}</Text>
+      <Text style={styled.time}>
+        {moment(item.createdAt).format('hh:mm A')}
+      </Text>
     </View>
   );
 }

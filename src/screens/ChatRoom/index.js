@@ -74,7 +74,7 @@ export default function ChatRoom({route}) {
             renderItem={({item}) => <Bubble item={item} />}
             keyExtractor={(item) => item.id.toString()}
             onEndReached={nextPage}
-            onEndReachedThreshold={(0, 1)}
+            onEndReachedThreshold={(0, 5)}
           />
         </View>
 
