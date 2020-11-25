@@ -78,4 +78,18 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
+  imageWrapper: {
+    position: 'relative',
+  },
+  cameraWrapper: {
+    position: 'absolute',
+    backgroundColor: color.header,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    bottom: 0,
+    left: 220,
+  },
 });

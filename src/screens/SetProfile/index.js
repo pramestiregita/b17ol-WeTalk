@@ -79,7 +79,6 @@ export default function SetProfile() {
       });
     }
 
-    console.log(form);
     dispatch(profileAction.setProfile(token, form));
   };
 

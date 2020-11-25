@@ -2,10 +2,19 @@ import React, {useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFa from 'react-native-vector-icons/FontAwesome5';
-import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+} from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {Formik} from 'formik';
-import {API_URL} from '@env';
+import ImagePicker from 'react-native-image-picker';
+
+import {API_URL, LIMIT_FILE} from '@env';
 
 import styled from './style';
 import color from '../../assets/color';
@@ -32,16 +41,58 @@ export default function MyProfile({navigation}) {
     }
   };
 
+  const selectImage = async () => {
+    const options = {
+      title: 'You can choose one image',
+      maxWidth: 256,
+      maxHeight: 256,
+      storageOptions: {
+        skipBackup: true,
+      },
+      noData: true,
+      mediaType: 'photo',
+    };
+
+    ImagePicker.showImagePicker(options, async (response) => {
+      if (response.didCancel) {
+        Alert.alert("You didn't select an image");
+      } else if (response.error) {
+        Alert.alert('Try again later!');
+      } else if (response.fileSize > LIMIT_FILE) {
+        Alert.alert('File is too big');
+      } else {
+        const form = new FormData();
+
+        form.append('avatar', {
+          uri: response.uri,
+          name: response.fileName,
+          type: response.type,
+        });
+
+        const {value} = await dispatch(profileAction.changeAva(token, form));
+        if (value.data.success) {
+          nameSheet.current.close();
+          getData();
+        }
+      }
+    });
+  };
+
   return (
     Object.keys(data).length > 0 && (
       <>
         <View style={styled.parent}>
-          <TouchableOpacity>
+          <View style={styled.imageWrapper}>
             <Image
               style={styled.avatar}
               source={data.avatar ? {uri: API_URL.concat(data.avatar)} : avatar}
             />
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => selectImage()}
+              style={styled.cameraWrapper}>
+              <IconFa name="camera" size={20} color="white" />
+            </TouchableOpacity>
+          </View>
           <View style={styled.listWrapper}>
             <TouchableOpacity
               onPress={() => nameSheet.current.open()}

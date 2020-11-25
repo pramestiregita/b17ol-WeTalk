@@ -14,4 +14,8 @@ export default {
     type: 'SET_PROFILE',
     payload: http(token).patch('user/set-profile', qs.stringify(data)),
   }),
+  changeAva: (token, data) => ({
+    type: 'SET_PROFILE',
+    payload: http(token).patch('user/update-ava', data),
+  }),
 };
