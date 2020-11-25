@@ -13,7 +13,7 @@ import Bubble from '../../components/ChatBubble';
 export default function ChatRoom({route}) {
   const {id} = route.params;
   const {token} = useSelector((state) => state.auth);
-  const {detail} = useSelector((state) => state.message);
+  const {detail, isSuccess} = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
   const input = useRef();
@@ -22,9 +22,24 @@ export default function ChatRoom({route}) {
     await dispatch(messageAction.getMsg(token, id));
   };
 
+  const getData = async () => {
+    await dispatch(messageAction.getAll(token));
+  };
+
   useEffect(() => {
     getDetail();
   }, []);
+
+  const send = async (value) => {
+    await dispatch(messageAction.sendMsg(token, id, value));
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      getDetail();
+      getData();
+    }
+  }, [isSuccess]);
 
   const data = [
     {
@@ -93,6 +108,7 @@ export default function ChatRoom({route}) {
     <View style={styled.parent}>
       <View style={styled.contentWrapper}>
         <FlatList
+          inverted
           data={detail}
           renderItem={({item}) => <Bubble item={item} />}
           keyExtractor={(item) => item.id.toString()}
@@ -102,10 +118,10 @@ export default function ChatRoom({route}) {
       <Formik
         initialValues={{content: ''}}
         onSubmit={(values) => {
-          console.log(values);
+          send(values);
           input.current.clear();
         }}>
-        {({handleBlur, handleChange, handleSubmit, handleReset, values}) => (
+        {({handleBlur, handleChange, handleSubmit, values}) => (
           <View style={styled.footerWrapper}>
             <View style={styled.inputWrapper}>
               <View style={styled.iconWrapper}>
@@ -116,7 +132,7 @@ export default function ChatRoom({route}) {
                 ref={input}
                 onChangeText={handleChange('content')}
                 onBlur={handleBlur('content')}
-                onSubmitEditing={handleSubmit}
+                // onSubmitEditing={handleSubmit}
                 style={styled.input}
                 placeholder="Ketik pesan"
                 multiline

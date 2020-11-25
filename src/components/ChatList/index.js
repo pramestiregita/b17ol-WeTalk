@@ -36,7 +36,7 @@ export default function ChatList({item}) {
         </Body>
 
         <Right style={styled.info}>
-          <Text note>{moment(item.createdAt).format('hh:MM')}</Text>
+          <Text note>{moment(item.createdAt).format('hh:mm')}</Text>
           {item.sender.id === userId ? (
             <Icon name="check" size={20} color="grey" />
           ) : null}

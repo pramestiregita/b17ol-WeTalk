@@ -5,6 +5,7 @@ const initialState = {
   detailInfo: {},
   isLoading: false,
   isError: false,
+  isSucces: false,
 };
 
 export default (state = initialState, action) => {
@@ -51,6 +52,27 @@ export default (state = initialState, action) => {
         isError: false,
         detail: action.payload.data.data,
         detailInfo: action.payload.data.pageInfo,
+      };
+    }
+    case 'SEND_MSG_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'SEND_MSG_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+    case 'SEND_MSG_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        isSuccess: true,
       };
     }
     default: {
