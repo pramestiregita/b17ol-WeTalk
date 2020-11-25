@@ -11,7 +11,7 @@ import styled from './style';
 import authAction from '../../redux/actions/auth';
 
 const loginSchema = Yup.object().shape({
-  phoneNumber: Yup.number().required('Please insert your number'),
+  phoneNumber: Yup.string().required('Please insert your number'),
 });
 
 export default function Login() {

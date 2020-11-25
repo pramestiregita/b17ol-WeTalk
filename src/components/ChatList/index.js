@@ -45,7 +45,7 @@ export default function ChatList({item}) {
           ) : (
             <Text style={styled.name}>{item.recipient.name}</Text>
           )}
-          <Text style={styled.text}>{item.content}</Text>
+          <Text style={styled.text}>{item.preview}</Text>
         </Body>
 
         <Right style={styled.info}>
