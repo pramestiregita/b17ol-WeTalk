@@ -6,6 +6,8 @@ import {Thumbnail, Text, List, ListItem, Left, Body, Right} from 'native-base';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import {API_URL} from '@env';
+
 import avatar from '../../assets/avatar.jpg';
 
 export default function ChatList({item}) {
@@ -16,13 +18,23 @@ export default function ChatList({item}) {
   const navigation = useNavigation();
 
   return (
-    <List key={item.id}>
+    <List style={styled.parent} key={item.id}>
       <ListItem
         onPress={() => navigation.navigate('ChatRoom', {id: friendId})}
         avatar>
         <Left>
           <TouchableOpacity>
-            <Thumbnail source={avatar} />
+            <Thumbnail
+              source={
+                item.sender.id !== userId
+                  ? item.sender.avatar
+                    ? {uri: API_URL.concat(item.sender.avatar)}
+                    : avatar
+                  : item.recipient.avatar
+                  ? {uri: API_URL.concat(item.recipient.avatar)}
+                  : avatar
+              }
+            />
           </TouchableOpacity>
         </Left>
 
@@ -47,6 +59,9 @@ export default function ChatList({item}) {
 }
 
 const styled = StyleSheet.create({
+  parent: {
+    justifyContent: 'center',
+  },
   name: {
     fontWeight: 'bold',
   },
