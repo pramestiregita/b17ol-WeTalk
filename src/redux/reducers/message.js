@@ -75,6 +75,28 @@ export default (state = initialState, action) => {
         isSuccess: true,
       };
     }
+    case 'NEXT_MSG_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'NEXT_MSG_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+    case 'NEXT_MSG_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        detail: action.payload.data.data,
+        detailInfo: action.payload.data.pageInfo,
+      };
+    }
     case 'LOGOUT': {
       return initialState;
     }

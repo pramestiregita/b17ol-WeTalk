@@ -14,4 +14,8 @@ export default {
     type: 'SEND_MSG',
     payload: http(token).post(`message/send/${id}`, qs.stringify(data)),
   }),
+  next: (token, url) => ({
+    type: 'NEXT_MSG',
+    payload: http(token).get(url),
+  }),
 };

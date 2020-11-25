@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconMi from 'react-native-vector-icons/MaterialIcons';
@@ -14,15 +14,19 @@ import Bubble from '../../components/ChatBubble';
 
 export default function ChatRoom({route}) {
   const {id: friendId} = route.params;
+
+  const [data, setData] = useState([]);
+
   const {token} = useSelector((state) => state.auth);
-  const {detail} = useSelector((state) => state.message);
+  const {detailInfo} = useSelector((state) => state.message);
   const {detail: friend} = useSelector((state) => state.friend);
 
   const dispatch = useDispatch();
   const input = useRef();
 
   const getDetail = async () => {
-    await dispatch(messageAction.getMsg(token, friendId));
+    const {value} = await dispatch(messageAction.getMsg(token, friendId));
+    setData(value.data.data);
   };
 
   const getFriend = async () => {
@@ -49,68 +53,15 @@ export default function ChatRoom({route}) {
     }
   };
 
-  const data = [
-    {
-      id: 1,
-      senderId: 2,
-      recipientId: 1,
-      content: 'Hai',
-      time: '12.30',
-    },
-    {
-      id: 2,
-      senderId: 1,
-      recipientId: 2,
-      content: 'Hai',
-      time: '12.30',
-    },
-    {
-      id: 3,
-      senderId: 2,
-      recipientId: 1,
-      content: 'Halo',
-      time: '12.30',
-    },
-    {
-      id: 4,
-      senderId: 1,
-      recipientId: 2,
-      content: 'Halo',
-      time: '12.30',
-    },
-    {
-      id: 5,
-      senderId: 2,
-      recipientId: 1,
-      content:
-        'Pandemi corona semakin melanda dunia, tetapi BTS tetap menelurkan karya.',
-      time: '12.30',
-    },
-    {
-      id: 6,
-      senderId: 1,
-      recipientId: 2,
-      content:
-        'Tampaknya, BTS bakal melakukan comeback sebanyak dua kali pada tahun 2020 ini. Sebab, Big Hit Entertainment baru saja merilis pengumuman tanggal peluncuran album baru boy group yang digawangi RM sebagai leader tersebut. ',
-      time: '12.30',
-    },
-    {
-      id: 7,
-      senderId: 2,
-      recipientId: 1,
-      content:
-        'Para member BTS acap kali mengatakan pada deretan penampilan terbaru, mereka ingin terus menghibur para penggemar yang disebut ARMY di waktu yang serba sulit seperti sekarang. ',
-      time: '12.30',
-    },
-    {
-      id: 8,
-      senderId: 1,
-      recipientId: 2,
-      content:
-        'Album baru BTS yang bertajuk Be ini akan rilis tepat pada tanggal 20 November 2020 mendatang. ',
-      time: '12.30',
-    },
-  ];
+  const nextPage = async () => {
+    if (detailInfo.nextLink) {
+      const {value} = await dispatch(
+        messageAction.next(token, detailInfo.nextLink),
+      );
+      const nextData = [...data, ...value.data.data];
+      setData(nextData);
+    }
+  };
 
   return (
     <>
@@ -119,9 +70,11 @@ export default function ChatRoom({route}) {
         <View style={styled.contentWrapper}>
           <FlatList
             inverted
-            data={detail}
+            data={data}
             renderItem={({item}) => <Bubble item={item} />}
             keyExtractor={(item) => item.id.toString()}
+            onEndReached={nextPage}
+            onEndReachedThreshold={(0, 1)}
           />
         </View>
 
