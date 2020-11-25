@@ -18,13 +18,14 @@ export default function ChatList({item}) {
   const navigation = useNavigation();
 
   return (
-    <List style={styled.parent} key={item.id}>
+    <List key={item.id}>
       <ListItem
         onPress={() => navigation.navigate('ChatRoom', {id: friendId})}
         avatar>
         <Left>
           <TouchableOpacity>
             <Thumbnail
+              style={styled.image}
               source={
                 item.sender.id !== userId
                   ? item.sender.avatar
@@ -59,7 +60,7 @@ export default function ChatList({item}) {
 }
 
 const styled = StyleSheet.create({
-  parent: {
+  image: {
     justifyContent: 'center',
   },
   name: {

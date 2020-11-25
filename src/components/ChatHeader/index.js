@@ -20,12 +20,12 @@ export default function ChatHeader({item}) {
         onPress={() => navigation.goBack()}
         style={styled.goBack}>
         <IconFa name="arrow-left" size={20} color={color.theme} />
-      </TouchableOpacity>
 
-      <Thumbnail
-        small
-        source={item.avatar ? {uri: API_URL.concat(item.avatar)} : avatar}
-      />
+        <Thumbnail
+          small
+          source={item.avatar ? {uri: API_URL.concat(item.avatar)} : avatar}
+        />
+      </TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => navigation.navigate('FriendInfo')}
@@ -68,8 +68,10 @@ const styled = StyleSheet.create({
     backgroundColor: color.header,
   },
   goBack: {
-    width: 50,
+    width: 90,
     alignItems: 'center',
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
   },
   nameWrapper: {
     flex: 1,
