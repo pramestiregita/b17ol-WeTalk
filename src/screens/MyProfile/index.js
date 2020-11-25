@@ -54,9 +54,7 @@ export default function MyProfile({navigation}) {
     };
 
     ImagePicker.showImagePicker(options, async (response) => {
-      if (response.didCancel) {
-        Alert.alert("You didn't select an image");
-      } else if (response.error) {
+      if (response.error) {
         Alert.alert('Try again later!');
       } else if (response.fileSize > LIMIT_FILE) {
         Alert.alert('File is too big');
