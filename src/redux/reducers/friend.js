@@ -27,6 +27,9 @@ export default (state = initialState, action) => {
         detail: action.payload.data.data,
       };
     }
+    case 'LOGOUT': {
+      return initialState;
+    }
     default: {
       return state;
     }

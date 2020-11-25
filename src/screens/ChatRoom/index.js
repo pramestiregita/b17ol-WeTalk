@@ -15,7 +15,7 @@ import Bubble from '../../components/ChatBubble';
 export default function ChatRoom({route}) {
   const {id: friendId} = route.params;
   const {token} = useSelector((state) => state.auth);
-  const {detail, isSuccess} = useSelector((state) => state.message);
+  const {detail} = useSelector((state) => state.message);
   const {detail: friend} = useSelector((state) => state.friend);
 
   const dispatch = useDispatch();
@@ -23,6 +23,9 @@ export default function ChatRoom({route}) {
 
   const getDetail = async () => {
     await dispatch(messageAction.getMsg(token, friendId));
+  };
+
+  const getFriend = async () => {
     await dispatch(friendAction.getFriend(token, friendId));
   };
 
@@ -32,18 +35,19 @@ export default function ChatRoom({route}) {
 
   useEffect(() => {
     getDetail();
+    getFriend();
   }, []);
 
-  const send = async (value) => {
-    await dispatch(messageAction.sendMsg(token, friendId, value));
-  };
+  const send = async (body) => {
+    const {value} = await dispatch(
+      messageAction.sendMsg(token, friendId, body),
+    );
 
-  useEffect(() => {
-    if (isSuccess) {
+    if (value.data.success) {
       getDetail();
       getData();
     }
-  }, [isSuccess]);
+  };
 
   const data = [
     {
