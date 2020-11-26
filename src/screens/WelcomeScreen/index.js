@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, Image} from 'react-native';
 import {Button} from 'native-base';
+import RNBootSplash from 'react-native-bootsplash';
 
 import styled from './style';
 
 import logo from '../../assets/logo.png';
 
 export default function WelcomeScreen({navigation}) {
+  useEffect(() => {
+    RNBootSplash.hide({});
+  }, []);
+
   return (
     <View style={styled.parent}>
       <Text style={styled.title}>Selamat Datang di WeTalk</Text>

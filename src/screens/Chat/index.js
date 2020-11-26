@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import RNBootSplash from 'react-native-bootsplash';
 
 import messageAction from '../../redux/actions/message';
 
@@ -21,6 +22,7 @@ export default function Chat() {
 
   useEffect(() => {
     getData();
+    RNBootSplash.hide({});
   }, []);
 
   return (
