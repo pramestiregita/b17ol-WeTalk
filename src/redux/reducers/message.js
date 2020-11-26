@@ -93,7 +93,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: false,
-        detail: action.payload.data.data,
+        detail: [...state.detail, ...action.payload.data.data],
         detailInfo: action.payload.data.pageInfo,
       };
     }

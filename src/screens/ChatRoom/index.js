@@ -1,4 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconMi from 'react-native-vector-icons/MaterialIcons';
@@ -16,8 +17,6 @@ import Bubble from '../../components/ChatBubble';
 export default function ChatRoom({route}) {
   const {id: friendId} = route.params;
 
-  const [data, setData] = useState([]);
-
   const {token} = useSelector((state) => state.auth);
   const {detail, detailInfo} = useSelector((state) => state.message);
   const {detail: friend} = useSelector((state) => state.friend);
@@ -27,9 +26,8 @@ export default function ChatRoom({route}) {
   const input = useRef();
 
   const getDetail = async () => {
-    const {value} = await dispatch(messageAction.getMsg(token, friendId));
+    await dispatch(messageAction.getMsg(token, friendId));
     await dispatch(messageAction.getAll(token));
-    setData(value.data.data);
   };
 
   const getFriend = async () => {
@@ -59,11 +57,7 @@ export default function ChatRoom({route}) {
 
   const nextPage = async () => {
     if (detailInfo.nextLink) {
-      const {value} = await dispatch(
-        messageAction.next(token, detailInfo.nextLink),
-      );
-      const nextData = [...data, ...value.data.data];
-      setData(nextData);
+      await dispatch(messageAction.next(token, detailInfo.nextLink));
     }
   };
 

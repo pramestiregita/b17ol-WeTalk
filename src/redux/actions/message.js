@@ -8,7 +8,7 @@ export default {
   }),
   getMsg: (token, id) => ({
     type: 'GET_MSG',
-    payload: http(token).get(`message/${id}`),
+    payload: http(token).get(`message/${id}?limit=15`),
   }),
   sendMsg: (token, id, data) => ({
     type: 'SEND_MSG',
