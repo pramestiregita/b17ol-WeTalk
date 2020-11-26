@@ -91,7 +91,8 @@ export default function Settings({navigation}) {
       <TouchableOpacity
         onPress={() => {
           dispatch({type: 'LOGOUT'});
-        }}>
+        }}
+        style={styled.list}>
         <Text>logout</Text>
       </TouchableOpacity>
     </View>

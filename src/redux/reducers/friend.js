@@ -51,6 +51,28 @@ export default (state = initialState, action) => {
         pageInfo: action.payload.data.pageInfo,
       };
     }
+    case 'SEARCH_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'SEARCH_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+    case 'SEARCH_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        data: action.payload.data.data,
+        pageInfo: action.payload.data.pageInfo,
+      };
+    }
     case 'LOGOUT': {
       return initialState;
     }

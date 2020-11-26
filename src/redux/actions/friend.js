@@ -9,4 +9,8 @@ export default {
     type: 'GET_CONTACT',
     payload: http(token).get('user/friend'),
   }),
+  searchContact: (token, search) => ({
+    type: 'SEARCH',
+    payload: http(token).get(`user/friend?search=${search}`),
+  }),
 };
