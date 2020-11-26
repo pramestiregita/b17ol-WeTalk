@@ -17,7 +17,7 @@ export default function ChatHeader({item}) {
   return (
     <View style={styled.parent}>
       <TouchableOpacity
-        onPress={() => navigation.goBack()}
+        onPress={() => navigation.navigate('Chat')}
         style={styled.goBack}>
         <IconFa name="arrow-left" size={20} color={color.theme} />
 
