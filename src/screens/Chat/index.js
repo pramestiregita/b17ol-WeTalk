@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -11,16 +11,13 @@ import color from '../../assets/color';
 import List from '../../components/ChatList';
 
 export default function Chat({navigation}) {
-  const [nextList, setData] = useState([]);
-
   const {token} = useSelector((state) => state.auth);
   const {data, pageInfo} = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
 
   const getData = async () => {
-    const {value} = await dispatch(messageAction.getAll(token));
-    setData(value.data.data);
+    await dispatch(messageAction.getAll(token));
   };
 
   useEffect(() => {
@@ -30,19 +27,14 @@ export default function Chat({navigation}) {
 
   const nextPage = async () => {
     if (pageInfo.nextLink) {
-      const {value} = await dispatch(
-        messageAction.nextAll(token, pageInfo.nextLink),
-      );
-      const nextData = [...nextList, ...value.data.data];
-      setData(nextData);
+      await dispatch(messageAction.nextAll(token, pageInfo.nextLink));
     }
   };
 
   return (
     <View style={styled.parent}>
-      {console.log(nextList)}
       <FlatList
-        data={nextList.length > data.length ? nextList : data}
+        data={data}
         renderItem={({item}) => <List item={item} />}
         keyExtractor={(item) => item.id.toString()}
         onEndReached={nextPage}
