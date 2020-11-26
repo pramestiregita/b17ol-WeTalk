@@ -45,7 +45,9 @@ export default function ChatList({item}) {
           ) : (
             <Text style={styled.name}>{item.recipient.name}</Text>
           )}
-          <Text style={styled.text}>{item.preview}</Text>
+          <Text style={styled.text}>
+            {item.content.length > 30 ? item.preview : item.content}
+          </Text>
         </Body>
 
         <Right style={styled.info}>
