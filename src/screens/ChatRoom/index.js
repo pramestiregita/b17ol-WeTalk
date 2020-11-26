@@ -18,7 +18,9 @@ export default function ChatRoom({route}) {
   const {id: friendId} = route.params;
 
   const {token} = useSelector((state) => state.auth);
-  const {detail, detailInfo} = useSelector((state) => state.message);
+  const {detailLoading, detail, detailInfo} = useSelector(
+    (state) => state.message,
+  );
   const {detail: friend} = useSelector((state) => state.friend);
   const {userId} = useSelector((state) => state.profile);
 
@@ -66,14 +68,16 @@ export default function ChatRoom({route}) {
       <Header item={friend} />
       <View style={styled.parent}>
         <View style={styled.contentWrapper}>
-          <FlatList
-            inverted
-            data={detail}
-            renderItem={({item}) => <Bubble item={item} />}
-            keyExtractor={(item) => item.id.toString()}
-            onEndReached={nextPage}
-            onEndReachedThreshold={(0, 5)}
-          />
+          {!detailLoading && (
+            <FlatList
+              inverted
+              data={detail}
+              renderItem={({item}) => <Bubble item={item} />}
+              keyExtractor={(item) => item.id.toString()}
+              onEndReached={nextPage}
+              onEndReachedThreshold={(0, 5)}
+            />
+          )}
         </View>
 
         <Formik

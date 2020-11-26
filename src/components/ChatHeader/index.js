@@ -1,5 +1,6 @@
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 import IconMi from 'react-native-vector-icons/MaterialIcons';
 import IconFa from 'react-native-vector-icons/FontAwesome5';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
@@ -12,6 +13,8 @@ import color from '../../assets/color';
 import avatar from '../../assets/avatar.jpg';
 
 export default function ChatHeader({item}) {
+  const {isLoading, detail} = useSelector((state) => state.friend);
+
   const navigation = useNavigation();
 
   return (
@@ -21,18 +24,33 @@ export default function ChatHeader({item}) {
         style={styled.goBack}>
         <IconFa name="arrow-left" size={20} color={color.theme} />
 
-        <Thumbnail
-          small
-          source={item.avatar ? {uri: API_URL.concat(item.avatar)} : avatar}
-        />
+        {!isLoading ? (
+          <Thumbnail
+            small
+            source={
+              detail.avatar ? {uri: API_URL.concat(detail.avatar)} : avatar
+            }
+          />
+        ) : (
+          <Thumbnail small source={avatar} />
+        )}
       </TouchableOpacity>
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate('FriendInfo')}
-        style={styled.nameWrapper}>
-        <Text style={styled.name}>{item.name}</Text>
-        <Text style={styled.status}>Online</Text>
-      </TouchableOpacity>
+      {!isLoading ? (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('FriendInfo')}
+          style={styled.nameWrapper}>
+          <Text style={styled.name}>{detail.name}</Text>
+          <Text style={styled.status}>Online</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('FriendInfo')}
+          style={styled.nameWrapper}>
+          <Text style={styled.name} />
+          <Text style={styled.status} />
+        </TouchableOpacity>
+      )}
 
       <View style={styled.iconWrapper}>
         <IconFa

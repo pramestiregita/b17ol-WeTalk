@@ -12,6 +12,8 @@ export default function ChatBubble({item}) {
   const bubble = () => {
     if (item.senderId === userId) {
       if (item.content.length < 10) {
+        return [styled.outgoing, styled.xsmall];
+      } else if (item.content.length < 20) {
         return [styled.outgoing, styled.small];
       } else if (item.content.length < 35) {
         return [styled.outgoing, styled.med];
@@ -20,6 +22,8 @@ export default function ChatBubble({item}) {
       }
     } else {
       if (item.content.length < 10) {
+        return [styled.incoming, styled.xsmall];
+      } else if (item.content.length < 20) {
         return [styled.incoming, styled.small];
       } else if (item.content.length < 35) {
         return [styled.incoming, styled.med];
@@ -57,11 +61,14 @@ const styled = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-end',
   },
-  small: {
+  xsmall: {
     width: '30%',
   },
-  med: {
+  small: {
     width: '50%',
+  },
+  med: {
+    width: '60%',
   },
   big: {
     width: '90%',

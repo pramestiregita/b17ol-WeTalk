@@ -4,6 +4,7 @@ const initialState = {
   detail: [],
   detailInfo: {},
   isLoading: false,
+  detailLoading: false,
   isError: false,
   isSucces: false,
 };
@@ -35,20 +36,20 @@ export default (state = initialState, action) => {
     case 'GET_MSG_PENDING': {
       return {
         ...state,
-        isLoading: true,
+        detailLoading: true,
       };
     }
     case 'GET_MSG_REJECTED': {
       return {
         ...state,
-        isLoading: false,
+        detailLoading: false,
         isError: true,
       };
     }
     case 'GET_MSG_FULFILLED': {
       return {
         ...state,
-        isLoading: false,
+        detailLoading: false,
         isError: false,
         detail: action.payload.data.data,
         detailInfo: action.payload.data.pageInfo,

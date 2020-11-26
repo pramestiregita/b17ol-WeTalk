@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -23,17 +24,16 @@ const searchSchema = Yup.object().shape({
 });
 
 export default function Contact() {
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [search, setSearch] = useState(false);
   const {token} = useSelector((state) => state.auth);
-  const {pageInfo} = useSelector((state) => state.friend);
+  const {data, pageInfo} = useSelector((state) => state.friend);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const getData = async () => {
-    const {value} = await dispatch(friendAction.getContact(token));
-    setData(value.data.data);
+    await dispatch(friendAction.getContact(token));
   };
 
   useEffect(() => {
@@ -41,8 +41,7 @@ export default function Contact() {
   }, []);
 
   const searching = async (body) => {
-    const {value} = await dispatch(friendAction.searchContact(token, body));
-    setData(value.data.data);
+    await dispatch(friendAction.searchContact(token, body));
   };
 
   const back = () => {
@@ -52,11 +51,7 @@ export default function Contact() {
 
   const nextPage = async () => {
     if (pageInfo.nextLink) {
-      const {value} = await dispatch(
-        friendAction.next(token, pageInfo.nextLink),
-      );
-      const nextData = [...data, ...value.data.data];
-      setData(nextData);
+      await dispatch(friendAction.next(token, pageInfo.nextLink));
     }
   };
 
