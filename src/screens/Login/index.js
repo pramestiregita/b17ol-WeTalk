@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, Keyboard} from 'react-native';
 import {Button} from 'native-base';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -11,7 +11,10 @@ import styled from './style';
 import authAction from '../../redux/actions/auth';
 
 const loginSchema = Yup.object().shape({
-  phoneNumber: Yup.string().required('Please insert your number'),
+  phoneNumber: Yup.string()
+    .min(12, 'Please insert a valid number')
+    .max(13, 'Please insert a valid number')
+    .required('Please insert your number'),
 });
 
 export default function Login() {
@@ -22,9 +25,10 @@ export default function Login() {
   return (
     <View style={styled.parent}>
       <Formik
-        initialValues={{phoneNumber: null}}
+        initialValues={{phoneNumber: ''}}
         validationSchema={loginSchema}
         onSubmit={(values) => {
+          Keyboard.dismiss();
           dispatch(authAction.login(values));
         }}>
         {({
@@ -72,6 +76,12 @@ export default function Login() {
                   autoFocus={true}
                 />
               </View>
+
+              {errors.phoneNumber && touched.phoneNumber ? (
+                <Text style={[styled.info, styled.error]}>
+                  {errors.phoneNumber}
+                </Text>
+              ) : null}
 
               <Text style={styled.info}>
                 Biaya SMS operator telepon mungkin berlaku

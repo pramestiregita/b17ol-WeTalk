@@ -14,6 +14,7 @@ import ImagePicker from 'react-native-image-picker';
 import {Button} from 'native-base';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import RNBootSplash from 'react-native-bootsplash';
 
 import {API_URL, LIMIT_FILE} from '@env';
 
@@ -40,6 +41,7 @@ export default function SetProfile() {
 
   useEffect(() => {
     getData();
+    RNBootSplash.hide({});
   }, []);
 
   const selectImage = () => {
@@ -91,7 +93,14 @@ export default function SetProfile() {
         initialValues={{name: data.name}}
         validationSchema={profileSchema}
         onSubmit={(values) => onSubmit(values)}>
-        {({handleBlur, handleChange, handleSubmit, values, errors}) => (
+        {({
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
           <View style={styled.parent}>
             <View style={styled.contentWrapper}>
               <Text style={styled.title}>Info Profil</Text>
@@ -122,6 +131,10 @@ export default function SetProfile() {
                 />
                 <Icon style={styled.emoji} name="laugh" size={20} />
               </View>
+
+              {errors.name && touched.name ? (
+                <Text style={styled.error}>{errors.name}</Text>
+              ) : null}
             </View>
             <View style={styled.btnWrapper}>
               <Button onPress={handleSubmit} style={styled.btn} block>

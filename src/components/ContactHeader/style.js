@@ -2,9 +2,6 @@ import {StyleSheet} from 'react-native';
 import color from '../../assets/color';
 
 export default StyleSheet.create({
-  listParent: {
-    flex: 1,
-  },
   parent: {
     flexDirection: 'row',
     alignItems: 'center',

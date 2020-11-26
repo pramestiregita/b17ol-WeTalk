@@ -68,4 +68,8 @@ export default StyleSheet.create({
     color: color.btnTextColor,
     fontWeight: 'bold',
   },
+  error: {
+    fontStyle: 'italic',
+    color: 'red',
+  },
 });

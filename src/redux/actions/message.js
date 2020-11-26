@@ -4,7 +4,7 @@ import qs from 'qs';
 export default {
   getAll: (token) => ({
     type: 'GET_ALL',
-    payload: http(token).get('message/all'),
+    payload: http(token).get('message/all?limit=15'),
   }),
   getMsg: (token, id) => ({
     type: 'GET_MSG',

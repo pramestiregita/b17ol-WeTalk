@@ -7,11 +7,11 @@ export default {
   }),
   getContact: (token) => ({
     type: 'GET_CONTACT',
-    payload: http(token).get('user/friend'),
+    payload: http(token).get('user/friend?limit=15'),
   }),
   searchContact: (token, search) => ({
     type: 'SEARCH',
-    payload: http(token).get(`user/friend?search=${search}`),
+    payload: http(token).get(`user/friend?limit=15&search=${search}`),
   }),
   next: (token, url) => ({
     type: 'NEXT_CONTACT',

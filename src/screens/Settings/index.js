@@ -120,7 +120,7 @@ export default function Settings({navigation}) {
             </View>
           )
         }
-        keyExtractor={(item) => item.name}
+        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );

@@ -52,4 +52,9 @@ export default StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: 'bold',
   },
+  error: {
+    marginTop: 10,
+    fontStyle: 'italic',
+    color: 'red',
+  },
 });

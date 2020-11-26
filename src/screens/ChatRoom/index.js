@@ -13,6 +13,8 @@ import socket from '../../helpers/socket';
 
 import Header from '../../components/ChatHeader';
 import Bubble from '../../components/ChatBubble';
+import Spinner from '../../components/Spinner';
+import EmptyData from '../../components/EmptyData';
 
 export default function ChatRoom({route}) {
   const {id: friendId} = route.params;
@@ -68,15 +70,21 @@ export default function ChatRoom({route}) {
       <Header item={friend} />
       <View style={styled.parent}>
         <View style={styled.contentWrapper}>
-          {!detailLoading && (
-            <FlatList
-              inverted
-              data={detail}
-              renderItem={({item}) => <Bubble item={item} />}
-              keyExtractor={(item) => item.id.toString()}
-              onEndReached={nextPage}
-              onEndReachedThreshold={(0, 5)}
-            />
+          {!detailLoading ? (
+            Object.keys(detail).length > 0 ? (
+              <FlatList
+                inverted
+                data={detail}
+                renderItem={({item}) => <Bubble item={item} />}
+                keyExtractor={(item) => item.id.toString()}
+                onEndReached={nextPage}
+                onEndReachedThreshold={(0, 5)}
+              />
+            ) : (
+              <EmptyData text="There is no message" />
+            )
+          ) : (
+            <Spinner />
           )}
         </View>
 
