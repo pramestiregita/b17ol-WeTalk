@@ -18,4 +18,8 @@ export default {
     type: 'NEXT_MSG',
     payload: http(token).get(url),
   }),
+  nextAll: (token, url) => ({
+    type: 'NEXT_ALL_MSG',
+    payload: http(token).get(url),
+  }),
 };

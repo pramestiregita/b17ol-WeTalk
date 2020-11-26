@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -11,13 +11,16 @@ import color from '../../assets/color';
 import List from '../../components/ChatList';
 
 export default function Chat({navigation}) {
+  const [data, setData] = useState([]);
+
   const {token} = useSelector((state) => state.auth);
-  const {data} = useSelector((state) => state.message);
+  const {pageInfo} = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
 
   const getData = async () => {
-    await dispatch(messageAction.getAll(token));
+    const {value} = await dispatch(messageAction.getAll(token));
+    setData(value.data.data);
   };
 
   useEffect(() => {
@@ -25,12 +28,24 @@ export default function Chat({navigation}) {
     RNBootSplash.hide({});
   }, []);
 
+  const nextPage = async () => {
+    if (pageInfo.nextLink) {
+      const {value} = await dispatch(
+        messageAction.nextAll(token, pageInfo.nextLink),
+      );
+      const nextData = [...data, ...value.data.data];
+      setData(nextData);
+    }
+  };
+
   return (
     <View style={styled.parent}>
       <FlatList
         data={data}
         renderItem={({item}) => <List item={item} />}
         keyExtractor={(item) => item.id.toString()}
+        onEndReached={nextPage}
+        onEndReachedThreshold={(0, 5)}
       />
       <TouchableOpacity
         onPress={() => navigation.navigate('Contact')}
@@ -45,6 +60,7 @@ const styled = StyleSheet.create({
   parent: {
     flex: 1,
     position: 'relative',
+    marginBottom: 10,
   },
   iconWrapper: {
     position: 'absolute',

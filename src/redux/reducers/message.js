@@ -97,6 +97,28 @@ export default (state = initialState, action) => {
         detailInfo: action.payload.data.pageInfo,
       };
     }
+    case 'NEXT_ALL_MSG_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'NEXT_ALL_MSG_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+    case 'NEXT_ALL_MSG_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        data: action.payload.data.data,
+        pageInfo: action.payload.data.pageInfo,
+      };
+    }
     case 'LOGOUT': {
       return initialState;
     }
