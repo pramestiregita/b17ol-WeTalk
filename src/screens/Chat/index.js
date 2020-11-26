@@ -11,10 +11,10 @@ import color from '../../assets/color';
 import List from '../../components/ChatList';
 
 export default function Chat({navigation}) {
-  const [data, setData] = useState([]);
+  const [nextList, setData] = useState([]);
 
   const {token} = useSelector((state) => state.auth);
-  const {pageInfo} = useSelector((state) => state.message);
+  const {data, pageInfo} = useSelector((state) => state.message);
 
   const dispatch = useDispatch();
 
@@ -33,15 +33,16 @@ export default function Chat({navigation}) {
       const {value} = await dispatch(
         messageAction.nextAll(token, pageInfo.nextLink),
       );
-      const nextData = [...data, ...value.data.data];
+      const nextData = [...nextList, ...value.data.data];
       setData(nextData);
     }
   };
 
   return (
     <View style={styled.parent}>
+      {console.log(nextList)}
       <FlatList
-        data={data}
+        data={nextList.length > data.length ? nextList : data}
         renderItem={({item}) => <List item={item} />}
         keyExtractor={(item) => item.id.toString()}
         onEndReached={nextPage}

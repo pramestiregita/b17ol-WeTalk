@@ -13,4 +13,8 @@ export default {
     type: 'SEARCH',
     payload: http(token).get(`user/friend?search=${search}`),
   }),
+  next: (token, url) => ({
+    type: 'NEXT_CONTACT',
+    payload: http(token).get(url),
+  }),
 };

@@ -26,8 +26,8 @@ export default function ChatRoom({route}) {
 
   const getDetail = async () => {
     const {value} = await dispatch(messageAction.getMsg(token, friendId));
-    setData(value.data.data);
     await dispatch(messageAction.getAll(token));
+    setData(value.data.data);
   };
 
   const getFriend = async () => {

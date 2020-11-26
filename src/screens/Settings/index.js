@@ -82,7 +82,7 @@ export default function Settings({navigation}) {
           item.text === 'Logout' ? (
             <TouchableOpacity
               onPress={() => dispatch({type: 'LOGOUT'})}
-              key={item.id}
+              key={item.id + item.text}
               style={styled.list}>
               <Icon
                 style={styled.iconList}
@@ -95,7 +95,7 @@ export default function Settings({navigation}) {
               </View>
             </TouchableOpacity>
           ) : (
-            <View key={item.id} style={styled.list}>
+            <View key={item.id + item.text} style={styled.list}>
               {item.icon === 'key' ? (
                 <Icon
                   style={styled.iconList}

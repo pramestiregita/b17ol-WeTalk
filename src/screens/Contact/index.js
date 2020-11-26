@@ -50,6 +50,16 @@ export default function Contact() {
     setSearch(false);
   };
 
+  const nextPage = async () => {
+    if (pageInfo.nextLink) {
+      const {value} = await dispatch(
+        friendAction.next(token, pageInfo.nextLink),
+      );
+      const nextData = [...data, ...value.data.data];
+      setData(nextData);
+    }
+  };
+
   return (
     Object.keys(data).length > 0 && (
       <>
@@ -130,6 +140,8 @@ export default function Contact() {
             data={data}
             renderItem={({item}) => <List item={item} />}
             keyExtractor={(item) => item.id.toString()}
+            onEndReached={nextPage}
+            onEndReachedThreshold={(0, 5)}
           />
         </View>
       </>

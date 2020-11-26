@@ -73,6 +73,28 @@ export default (state = initialState, action) => {
         pageInfo: action.payload.data.pageInfo,
       };
     }
+    case 'NEXT_CONTACT_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'NEXT_CONTACT_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+    case 'NEXT_CONTACT_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        data: action.payload.data.data,
+        pageInfo: action.payload.data.pageInfo,
+      };
+    }
     case 'LOGOUT': {
       return initialState;
     }
