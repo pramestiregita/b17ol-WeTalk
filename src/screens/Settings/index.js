@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconMi from 'react-native-vector-icons/MaterialIcons';
-import {TouchableOpacity, View} from 'react-native';
+import {FlatList, TouchableOpacity, View} from 'react-native';
 import {Text, Thumbnail} from 'native-base';
 import {API_URL} from '@env';
 
@@ -18,33 +18,44 @@ export default function Settings({navigation}) {
 
   const list = [
     {
+      id: 1,
       icon: 'key',
       text: 'Akun',
       note: 'Privasi, keamanan, riwayat chat',
     },
     {
+      id: 2,
       icon: 'chat',
       text: 'Chat',
       note: 'Tema, wallpaper, riwayat chat',
     },
     {
+      id: 3,
       icon: 'notifications',
       text: 'Notifikasi',
       note: 'Pesan, grup & nada dering panggilan',
     },
     {
+      id: 4,
       icon: 'data-usage',
       text: 'Penyimpanan dan data',
       note: 'Penggunaan jaringan, unduh otomatis',
     },
     {
+      id: 5,
       icon: 'help-outline',
       text: 'Bantuan',
       note: 'Pusat Bantuan, hubungi kami, kabijakan privasi',
     },
     {
+      id: 6,
       icon: 'group',
       text: 'Undang teman',
+    },
+    {
+      id: 7,
+      icon: 'sign-out-alt',
+      text: 'Logout',
     },
   ];
 
@@ -65,36 +76,52 @@ export default function Settings({navigation}) {
         </TouchableOpacity>
       )}
       <View style={styled.divider} />
-      {list.map((i, o) => (
-        <View key={o} style={styled.list}>
-          {i.icon === 'key' ? (
-            <Icon
-              style={styled.iconList}
-              name={i.icon}
-              size={25}
-              color={color.header}
-            />
+      <FlatList
+        data={list}
+        renderItem={({item}) =>
+          item.text === 'Logout' ? (
+            <TouchableOpacity
+              onPress={() => dispatch({type: 'LOGOUT'})}
+              key={item.id}
+              style={styled.list}>
+              <Icon
+                style={styled.iconList}
+                name={item.icon}
+                size={25}
+                color="maroon"
+              />
+              <View style={styled.listText}>
+                <Text style={styled.logout}>{item.text}</Text>
+              </View>
+            </TouchableOpacity>
           ) : (
-            <IconMi
-              style={styled.iconList}
-              name={i.icon}
-              size={25}
-              color={color.header}
-            />
-          )}
-          <View style={styled.listText}>
-            <Text>{i.text}</Text>
-            {i.note ? <Text style={styled.note}>{i.note}</Text> : null}
-          </View>
-        </View>
-      ))}
-      <TouchableOpacity
-        onPress={() => {
-          dispatch({type: 'LOGOUT'});
-        }}
-        style={styled.list}>
-        <Text>logout</Text>
-      </TouchableOpacity>
+            <View key={item.id} style={styled.list}>
+              {item.icon === 'key' ? (
+                <Icon
+                  style={styled.iconList}
+                  name={item.icon}
+                  size={25}
+                  color={color.header}
+                />
+              ) : (
+                <IconMi
+                  style={styled.iconList}
+                  name={item.icon}
+                  size={25}
+                  color={color.header}
+                />
+              )}
+              <View style={styled.listText}>
+                <Text>{item.text}</Text>
+                {item.note ? (
+                  <Text style={styled.note}>{item.note}</Text>
+                ) : null}
+              </View>
+            </View>
+          )
+        }
+        keyExtractor={(item) => item.name}
+      />
     </View>
   );
 }

@@ -22,7 +22,7 @@ export default StyleSheet.create({
   },
   list: {
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -32,5 +32,9 @@ export default StyleSheet.create({
   listText: {
     flex: 1,
     marginLeft: 10,
+  },
+  logout: {
+    color: 'maroon',
+    fontWeight: 'bold',
   },
 });
