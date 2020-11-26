@@ -27,14 +27,11 @@ export default function ChatRoom({route}) {
   const getDetail = async () => {
     const {value} = await dispatch(messageAction.getMsg(token, friendId));
     setData(value.data.data);
+    await dispatch(messageAction.getAll(token));
   };
 
   const getFriend = async () => {
     await dispatch(friendAction.getFriend(token, friendId));
-  };
-
-  const getData = async () => {
-    await dispatch(messageAction.getAll(token));
   };
 
   useEffect(() => {
@@ -49,7 +46,6 @@ export default function ChatRoom({route}) {
 
     if (value.data.success) {
       getDetail();
-      getData();
     }
   };
 

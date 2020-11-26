@@ -1,6 +1,7 @@
 const initialState = {
-  data: {},
+  data: [],
   detail: {},
+  pageInfo: {},
   isLoading: false,
   isError: false,
 };
@@ -47,6 +48,7 @@ export default (state = initialState, action) => {
         isLoading: false,
         isError: false,
         data: action.payload.data.data,
+        pageInfo: action.payload.data.pageInfo,
       };
     }
     case 'LOGOUT': {

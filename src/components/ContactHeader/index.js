@@ -12,7 +12,7 @@ import {
 
 import color from '../../assets/color';
 
-export default function ChatHeader() {
+export default function ChatHeader({total}) {
   const navigation = useNavigation();
 
   return (
@@ -24,7 +24,7 @@ export default function ChatHeader() {
       </TouchableOpacity>
       <View style={styled.titleWrapper}>
         <Text style={styled.title}>Pilih kontak</Text>
-        <Text style={styled.subtitle}># kontak</Text>
+        <Text style={styled.subtitle}>{total} kontak</Text>
       </View>
       <IconFa style={styled.icon} name="search" size={20} color="white" />
       <Menu>

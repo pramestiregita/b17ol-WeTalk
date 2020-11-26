@@ -10,6 +10,7 @@ import List from '../../components/ContactList';
 export default function Contact() {
   const [data, setData] = useState([]);
   const {token} = useSelector((state) => state.auth);
+  const {pageInfo} = useSelector((state) => state.friend);
 
   const dispatch = useDispatch();
 
@@ -25,12 +26,12 @@ export default function Contact() {
   return (
     Object.keys(data).length > 0 && (
       <>
-        <Header />
+        <Header total={pageInfo.totalData} />
         <View style={styled.parent}>
           <FlatList
             data={data}
             renderItem={({item}) => <List item={item} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id.toString()}
           />
         </View>
       </>
