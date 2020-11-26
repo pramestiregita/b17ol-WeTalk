@@ -8,6 +8,7 @@ import {Formik} from 'formik';
 import styled from './style';
 import messageAction from '../../redux/actions/message';
 import friendAction from '../../redux/actions/friend';
+import socket from '../../helpers/socket';
 
 import Header from '../../components/ChatHeader';
 import Bubble from '../../components/ChatBubble';
@@ -18,8 +19,9 @@ export default function ChatRoom({route}) {
   const [data, setData] = useState([]);
 
   const {token} = useSelector((state) => state.auth);
-  const {detailInfo} = useSelector((state) => state.message);
+  const {detail, detailInfo} = useSelector((state) => state.message);
   const {detail: friend} = useSelector((state) => state.friend);
+  const {userId} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
   const input = useRef();
@@ -37,6 +39,12 @@ export default function ChatRoom({route}) {
   useEffect(() => {
     getDetail();
     getFriend();
+    socket.on(userId, () => {
+      getDetail();
+    });
+    return () => {
+      socket.close();
+    };
   }, []);
 
   const send = async (body) => {
@@ -66,7 +74,7 @@ export default function ChatRoom({route}) {
         <View style={styled.contentWrapper}>
           <FlatList
             inverted
-            data={data}
+            data={detail}
             renderItem={({item}) => <Bubble item={item} />}
             keyExtractor={(item) => item.id.toString()}
             onEndReached={nextPage}

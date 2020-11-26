@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -5,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import RNBootSplash from 'react-native-bootsplash';
 
 import messageAction from '../../redux/actions/message';
+import socket from '../../helpers/socket';
 
 import color from '../../assets/color';
 
@@ -13,6 +15,7 @@ import List from '../../components/ChatList';
 export default function Chat({navigation}) {
   const {token} = useSelector((state) => state.auth);
   const {data, pageInfo} = useSelector((state) => state.message);
+  const {userId} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
 
@@ -23,6 +26,12 @@ export default function Chat({navigation}) {
   useEffect(() => {
     getData();
     RNBootSplash.hide({});
+    socket.on(userId, () => {
+      getData();
+    });
+    return () => {
+      socket.close();
+    };
   }, []);
 
   const nextPage = async () => {
