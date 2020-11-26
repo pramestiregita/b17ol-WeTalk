@@ -10,7 +10,7 @@ import color from '../../assets/color';
 
 import List from '../../components/ChatList';
 
-export default function Chat() {
+export default function Chat({navigation}) {
   const {token} = useSelector((state) => state.auth);
   const {data} = useSelector((state) => state.message);
 
@@ -32,7 +32,9 @@ export default function Chat() {
         renderItem={({item}) => <List item={item} />}
         keyExtractor={(item) => item.id.toString()}
       />
-      <TouchableOpacity style={styled.iconWrapper}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Contact')}
+        style={styled.iconWrapper}>
         <Icon name="chat" size={25} color="white" />
       </TouchableOpacity>
     </View>

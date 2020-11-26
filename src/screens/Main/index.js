@@ -17,6 +17,7 @@ import FriendInfo from '../FriendInfo';
 import Settings from '../Settings';
 import MyProfile from '../MyProfile';
 import Info from '../Info';
+import Contact from '../Contact';
 
 import MainHeader from '../../components/MainHeader';
 
@@ -119,6 +120,12 @@ export default function Main() {
             }}
             name="Info"
             component={Info}
+          />
+
+          <Stack.Screen
+            options={{headerShown: false}}
+            name="Contact"
+            component={Contact}
           />
         </Stack.Navigator>
       )}
