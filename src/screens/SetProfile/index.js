@@ -29,6 +29,7 @@ const profileSchema = Yup.object().shape({
 
 export default function SetProfile() {
   const [imageSource, setImage] = useState(null);
+  const [imageUri, setUri] = useState('');
 
   const {token} = useSelector((state) => state.auth);
   const {data, isSuccess} = useSelector((state) => state.profile);
@@ -63,6 +64,7 @@ export default function SetProfile() {
         Alert.alert('File is too big');
       } else {
         setImage(response);
+        setUri(response.uri);
       }
     });
   };
@@ -111,10 +113,10 @@ export default function SetProfile() {
                 <Image
                   style={styled.image}
                   source={
-                    data.avatar
+                    imageSource
+                      ? {uri: imageUri}
+                      : data.avatar
                       ? {uri: API_URL.concat(data.avatar)}
-                      : imageSource
-                      ? {uri: imageSource.uri}
                       : add
                   }
                 />
