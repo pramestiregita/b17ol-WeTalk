@@ -25,11 +25,15 @@ export default function Chat({navigation}) {
     await dispatch(messageAction.getAll(token));
   };
 
+  const getNew = async () => {
+    await dispatch(messageAction.new(token));
+  };
+
   useEffect(() => {
     getData();
     RNBootSplash.hide({});
     socket.on(userId, () => {
-      getData();
+      getNew();
     });
     return () => {
       socket.close();

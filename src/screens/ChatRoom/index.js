@@ -32,6 +32,11 @@ export default function ChatRoom({route}) {
     await dispatch(messageAction.getAll(token));
   };
 
+  const getNew = async () => {
+    await dispatch(messageAction.newMsg(token, friendId));
+    await dispatch(messageAction.new(token));
+  };
+
   const getFriend = async () => {
     await dispatch(friendAction.getFriend(token, friendId));
   };
@@ -40,7 +45,7 @@ export default function ChatRoom({route}) {
     getDetail();
     getFriend();
     socket.on(userId, () => {
-      getDetail();
+      getNew();
     });
     return () => {
       socket.close();
