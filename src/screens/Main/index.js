@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import {useSelector} from 'react-redux';
 
 import color from '../../assets/color';
@@ -18,6 +18,8 @@ import Contact from '../Contact';
 import Tabs from './Tabs';
 
 import MainHeader from '../../components/MainHeader';
+import ChatHeader from '../../components/ChatHeader';
+import ContactHeader from '../../components/ContactHeader';
 
 const Stack = createStackNavigator();
 
@@ -56,9 +58,19 @@ export default function Main() {
           />
 
           <Stack.Screen
-            options={{
-              headerShown: false,
-            }}
+            options={({navigation}) => ({
+              headerStyle: {
+                elevation: 0,
+                backgroundColor: color.header,
+              },
+              headerTitle: (props) => <ChatHeader {...props} />,
+              headerLeft: () => (
+                <HeaderBackButton
+                  onPress={() => navigation.navigate('Chat')}
+                  tintColor="white"
+                />
+              ),
+            })}
             name="ChatRoom"
             component={ChatRoom}
           />
@@ -104,7 +116,15 @@ export default function Main() {
           />
 
           <Stack.Screen
-            options={{headerShown: false}}
+            options={{
+              headerStyle: {
+                elevation: 0,
+                backgroundColor: color.header,
+              },
+              headerTintColor: 'white',
+              headerTitle: (props) => <ContactHeader {...props} />,
+              headerLeft: false,
+            }}
             name="Contact"
             component={Contact}
           />

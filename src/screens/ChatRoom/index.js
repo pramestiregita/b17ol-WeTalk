@@ -11,7 +11,6 @@ import messageAction from '../../redux/actions/message';
 import friendAction from '../../redux/actions/friend';
 import socket from '../../helpers/socket';
 
-import Header from '../../components/ChatHeader';
 import Bubble from '../../components/ChatBubble';
 import Spinner from '../../components/Spinner';
 import EmptyData from '../../components/EmptyData';
@@ -23,7 +22,6 @@ export default function ChatRoom({route}) {
   const {detailLoading, detail, detailInfo} = useSelector(
     (state) => state.message,
   );
-  const {detail: friend} = useSelector((state) => state.friend);
   const {userId} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
@@ -67,7 +65,6 @@ export default function ChatRoom({route}) {
 
   return (
     <>
-      <Header item={friend} />
       <View style={styled.parent}>
         <View style={styled.contentWrapper}>
           {!detailLoading ? (
@@ -110,7 +107,6 @@ export default function ChatRoom({route}) {
                   ref={input}
                   onChangeText={handleChange('content')}
                   onBlur={handleBlur('content')}
-                  // onSubmitEditing={handleSubmit}
                   style={styled.input}
                   placeholder="Ketik pesan"
                   multiline

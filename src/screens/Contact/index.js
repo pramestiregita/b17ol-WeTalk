@@ -5,7 +5,6 @@ import {View, FlatList, StyleSheet} from 'react-native';
 
 import friendAction from '../../redux/actions/friend';
 
-import Header from '../../components/ContactHeader';
 import List from '../../components/ContactList';
 import Spinner from '../../components/Spinner';
 import EmptyData from '../../components/EmptyData';
@@ -32,7 +31,6 @@ export default function Contact() {
 
   return (
     <>
-      <Header />
       <View style={styled.parent}>
         {!isLoading ? (
           Object.keys(data).length > 0 ? (

@@ -1,17 +1,14 @@
 import {StyleSheet} from 'react-native';
-import color from '../../assets/color';
 
 export default StyleSheet.create({
   parent: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 60,
-    backgroundColor: color.header,
   },
   iconWrapper: {
     width: 50,
     alignItems: 'center',
-    marginRight: 20,
+    marginRight: 10,
   },
   titleWrapper: {
     flex: 1,
@@ -34,8 +31,9 @@ export default StyleSheet.create({
   searchParent: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 60,
     backgroundColor: 'white',
+    width: '100%',
+    borderRadius: 25,
   },
   inputWrapper: {
     width: '100%',

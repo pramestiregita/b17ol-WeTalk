@@ -19,36 +19,36 @@ export default function ChatHeader({item}) {
 
   return (
     <View style={styled.parent}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Chat')}
-        style={styled.goBack}>
-        <IconFa name="arrow-left" size={20} color={color.theme} />
-
-        {!isLoading ? (
-          <Thumbnail
-            small
-            source={
-              detail.avatar ? {uri: API_URL.concat(detail.avatar)} : avatar
-            }
-          />
-        ) : (
-          <Thumbnail small source={avatar} />
-        )}
-      </TouchableOpacity>
-
       {!isLoading ? (
         <TouchableOpacity
           onPress={() => navigation.navigate('FriendInfo')}
-          style={styled.nameWrapper}>
-          <Text style={styled.name}>{detail.name}</Text>
-          <Text style={styled.status}>Online</Text>
+          style={styled.friendInfo}>
+          <View style={styled.imageWrapper}>
+            <Thumbnail
+              small
+              source={
+                detail.avatar ? {uri: API_URL.concat(detail.avatar)} : avatar
+              }
+            />
+          </View>
+
+          <View style={styled.nameWrapper}>
+            <Text style={styled.name}>{detail.name}</Text>
+            <Text style={styled.status}>Online</Text>
+          </View>
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
           onPress={() => navigation.navigate('FriendInfo')}
-          style={styled.nameWrapper}>
-          <Text style={styled.name} />
-          <Text style={styled.status} />
+          style={styled.friendInfo}>
+          <View style={styled.imageWrapper}>
+            <Thumbnail small source={avatar} />
+          </View>
+
+          <View style={styled.nameWrapper}>
+            <Text style={styled.name} />
+            <Text style={styled.status} />
+          </View>
         </TouchableOpacity>
       )}
 
@@ -82,17 +82,18 @@ const styled = StyleSheet.create({
   parent: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 60,
     backgroundColor: color.header,
   },
-  goBack: {
-    width: 90,
+  friendInfo: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  imageWrapper: {
     alignItems: 'center',
     justifyContent: 'space-evenly',
     flexDirection: 'row',
   },
   nameWrapper: {
-    flex: 1,
     marginLeft: 10,
   },
   name: {
