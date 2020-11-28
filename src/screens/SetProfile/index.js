@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
-  Alert,
   View,
   Text,
   Image,
   TextInput,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import {Button} from 'native-base';
@@ -21,6 +21,9 @@ import {API_URL, LIMIT_FILE} from '@env';
 import styled from './style';
 import profileAction from '../../redux/actions/profile';
 
+import toast from '../../helpers/toast';
+import Modal from '../../components/Modal';
+
 import add from '../../assets/addpict.png';
 
 const profileSchema = Yup.object().shape({
@@ -28,11 +31,8 @@ const profileSchema = Yup.object().shape({
 });
 
 export default function SetProfile() {
-  const [imageSource, setImage] = useState(null);
-  const [imageUri, setUri] = useState('');
-
   const {token} = useSelector((state) => state.auth);
-  const {data, isSuccess} = useSelector((state) => state.profile);
+  const {data, isLoading} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
 
@@ -47,7 +47,7 @@ export default function SetProfile() {
 
   const selectImage = () => {
     const options = {
-      title: 'You can choose one image',
+      title: 'Silahkan pilih gambar',
       maxWidth: 256,
       maxHeight: 256,
       storageOptions: {
@@ -59,35 +59,33 @@ export default function SetProfile() {
 
     ImagePicker.showImagePicker(options, async (response) => {
       if (response.error) {
-        Alert.alert('Try again later!');
+        toast('Coba lagi nanti!');
       } else if (response.fileSize > LIMIT_FILE) {
-        Alert.alert('File is too big');
+        toast('Ukuran file terlalu besar');
+      } else if (response.didCancel) {
+        toast('Tidak ada gambar terpilih');
       } else {
-        setImage(response);
-        setUri(response.uri);
+        const form = new FormData();
+
+        form.append('avatar', {
+          uri: response.uri,
+          name: response.fileName,
+          type: response.type,
+        });
+
+        const {value} = await dispatch(profileAction.changeAva(token, form));
+        if (value.data.success) {
+          getData();
+        }
       }
     });
   };
 
-  const onSubmit = (value) => {
-    const form = new FormData();
-
-    form.append('name', value.name);
-
-    if (imageSource) {
-      form.append('avatar', {
-        uri: imageSource.uri,
-        name: imageSource.fileName,
-        type: imageSource.type,
-      });
-    }
-
-    dispatch(profileAction.setProfile(token, form));
+  const onSubmit = async (body) => {
+    Keyboard.dismiss();
+    await dispatch(profileAction.changeName(token, body));
+    getData();
   };
-
-  useEffect(() => {
-    isSuccess && getData();
-  }, [isSuccess]);
 
   return (
     Object.keys(data).length > 0 && (
@@ -104,6 +102,8 @@ export default function SetProfile() {
           touched,
         }) => (
           <View style={styled.parent}>
+            <Modal visible={isLoading} />
+
             <View style={styled.contentWrapper}>
               <Text style={styled.title}>Info Profil</Text>
               <Text style={styled.text}>
@@ -113,11 +113,7 @@ export default function SetProfile() {
                 <Image
                   style={styled.image}
                   source={
-                    imageSource
-                      ? {uri: imageUri}
-                      : data.avatar
-                      ? {uri: API_URL.concat(data.avatar)}
-                      : add
+                    data.avatar ? {uri: API_URL.concat(data.avatar)} : add
                   }
                 />
               </TouchableOpacity>

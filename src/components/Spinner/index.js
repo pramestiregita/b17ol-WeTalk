@@ -6,7 +6,7 @@ import color from '../../assets/color';
 
 export default function index() {
   return (
-    <View style={styled}>
+    <View style={styled.parent}>
       <Spinner color={color.title} />
     </View>
   );
@@ -14,7 +14,7 @@ export default function index() {
 
 const styled = StyleSheet.create({
   parent: {
-    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
 });

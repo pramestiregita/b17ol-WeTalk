@@ -1,9 +1,10 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import color from '../../assets/color';
+import messageAction from '../../redux/actions/message';
 
 import WelcomeScreen from '../WelcomeScreen';
 import Login from '../Login';
@@ -26,6 +27,8 @@ const Stack = createStackNavigator();
 export default function Main() {
   const {isLogin} = useSelector((state) => state.auth);
   const {setProfile} = useSelector((state) => state.profile);
+
+  const dispatch = useDispatch();
 
   return (
     <NavigationContainer>
@@ -66,7 +69,12 @@ export default function Main() {
               headerTitle: (props) => <ChatHeader {...props} />,
               headerLeft: () => (
                 <HeaderBackButton
-                  onPress={() => navigation.navigate('Chat')}
+                  onPress={() => {
+                    navigation.navigate('Chat');
+                    setTimeout(() => {
+                      dispatch(messageAction.clear());
+                    }, 1000);
+                  }}
                   tintColor="white"
                 />
               ),

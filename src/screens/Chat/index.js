@@ -11,12 +11,13 @@ import socket from '../../helpers/socket';
 import color from '../../assets/color';
 
 import List from '../../components/ChatList';
-import Spinner from '../../components/Spinner';
 import EmptyData from '../../components/EmptyData';
 
 export default function Chat({navigation}) {
+  const loading = false;
+
   const {token} = useSelector((state) => state.auth);
-  const {isLoading, data, pageInfo} = useSelector((state) => state.message);
+  const {data, pageInfo, isLoading} = useSelector((state) => state.message);
   const {userId} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
@@ -25,15 +26,11 @@ export default function Chat({navigation}) {
     await dispatch(messageAction.getAll(token));
   };
 
-  const getNew = async () => {
-    await dispatch(messageAction.new(token));
-  };
-
   useEffect(() => {
     getData();
     RNBootSplash.hide({});
     socket.on(userId, () => {
-      getNew();
+      getData();
     });
     return () => {
       socket.close();
@@ -48,21 +45,20 @@ export default function Chat({navigation}) {
 
   return (
     <View style={styled.parent}>
-      {!isLoading ? (
-        Object.keys(data).length > 0 ? (
+      {!isLoading &&
+        (Object.keys(data).length > 0 ? (
           <FlatList
             data={data}
             renderItem={({item}) => <List item={item} />}
             keyExtractor={(item) => item.id.toString()}
             onEndReached={nextPage}
             onEndReachedThreshold={(0, 5)}
+            refreshing={loading}
+            onRefresh={getData}
           />
         ) : (
           <EmptyData text="There is no message" />
-        )
-      ) : (
-        <Spinner />
-      )}
+        ))}
       <TouchableOpacity
         onPress={() => navigation.navigate('Contact')}
         style={styled.iconWrapper}>

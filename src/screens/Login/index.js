@@ -1,5 +1,5 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {View, Text, TouchableOpacity, TextInput, Keyboard} from 'react-native';
 import {Button} from 'native-base';
@@ -7,6 +7,8 @@ import {Formik} from 'formik';
 import * as Yup from 'yup';
 
 import styled from './style';
+
+import Modal from '../../components/Modal';
 
 import authAction from '../../redux/actions/auth';
 
@@ -20,10 +22,14 @@ const loginSchema = Yup.object().shape({
 export default function Login() {
   const selectedCountry = {name: 'Indonesia', code: '62'};
 
+  const {isLoading} = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
 
   return (
     <View style={styled.parent}>
+      <Modal visible={isLoading} />
+
       <Formik
         initialValues={{phoneNumber: ''}}
         validationSchema={loginSchema}

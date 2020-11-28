@@ -18,16 +18,13 @@ import friendAction from '../../redux/actions/friend';
 import socket from '../../helpers/socket';
 
 import Bubble from '../../components/ChatBubble';
-import Spinner from '../../components/Spinner';
-import EmptyData from '../../components/EmptyData';
 
 export default function ChatRoom({route}) {
   const {id: friendId} = route.params;
+  const loading = false;
 
   const {token} = useSelector((state) => state.auth);
-  const {detailLoading, detail, detailInfo} = useSelector(
-    (state) => state.message,
-  );
+  const {detail, detailInfo} = useSelector((state) => state.message);
   const {userId} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
@@ -38,11 +35,6 @@ export default function ChatRoom({route}) {
     await dispatch(messageAction.getAll(token));
   };
 
-  const getNew = async () => {
-    await dispatch(messageAction.newMsg(token, friendId));
-    await dispatch(messageAction.new(token));
-  };
-
   const getFriend = async () => {
     await dispatch(friendAction.getFriend(token, friendId));
   };
@@ -51,7 +43,7 @@ export default function ChatRoom({route}) {
     getDetail();
     getFriend();
     socket.on(userId, () => {
-      getNew();
+      getDetail();
     });
     return () => {
       socket.close();
@@ -59,13 +51,8 @@ export default function ChatRoom({route}) {
   }, []);
 
   const send = async (body) => {
-    const {value} = await dispatch(
-      messageAction.sendMsg(token, friendId, body),
-    );
-
-    if (value.data.success) {
-      getNew();
-    }
+    await dispatch(messageAction.sendMsg(token, friendId, body));
+    getDetail();
   };
 
   const nextPage = async () => {
@@ -78,21 +65,17 @@ export default function ChatRoom({route}) {
     <>
       <View style={styled.parent}>
         <View style={styled.contentWrapper}>
-          {!detailLoading ? (
-            Object.keys(detail).length > 0 ? (
-              <FlatList
-                inverted
-                data={detail}
-                renderItem={({item}) => <Bubble item={item} />}
-                keyExtractor={(item) => item.id.toString()}
-                onEndReached={nextPage}
-                onEndReachedThreshold={(0, 5)}
-              />
-            ) : (
-              <EmptyData text="There is no message" />
-            )
-          ) : (
-            <Spinner />
+          {Object.keys(detail).length > 0 && (
+            <FlatList
+              inverted
+              data={detail}
+              renderItem={({item}) => <Bubble item={item} />}
+              keyExtractor={(item) => item.id.toString()}
+              onEndReached={nextPage}
+              onEndReachedThreshold={(0, 5)}
+              refreshing={loading}
+              onRefresh={getDetail}
+            />
           )}
         </View>
 

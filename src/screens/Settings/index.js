@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconMi from 'react-native-vector-icons/MaterialIcons';
@@ -9,12 +9,20 @@ import {API_URL} from '@env';
 import styled from './style';
 import color from '../../assets/color';
 
+import Modal from '../../components/Modal';
+
 import avatar from '../../assets/avatar.jpg';
 
 export default function Settings({navigation}) {
+  const [visible, setVisible] = useState(false);
   const {data} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
+
+  const logout = () => {
+    setVisible(true);
+    dispatch({type: 'LOGOUT'});
+  };
 
   const list = [
     {
@@ -61,6 +69,7 @@ export default function Settings({navigation}) {
 
   return (
     <View style={styled.parent}>
+      <Modal visible={visible} />
       {Object.keys(data).length > 0 && (
         <TouchableOpacity
           onPress={() => navigation.navigate('MyProfile')}
@@ -81,7 +90,7 @@ export default function Settings({navigation}) {
         renderItem={({item}) =>
           item.text === 'Logout' ? (
             <TouchableOpacity
-              onPress={() => dispatch({type: 'LOGOUT'})}
+              onPress={() => logout}
               key={item.id + item.text}
               style={styled.list}>
               <Icon

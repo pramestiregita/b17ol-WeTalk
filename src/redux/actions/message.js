@@ -6,16 +6,8 @@ export default {
     type: 'GET_ALL',
     payload: http(token).get('message/all?limit=15'),
   }),
-  new: (token) => ({
-    type: 'GET_NEW',
-    payload: http(token).get('message/all?limit=15'),
-  }),
   getMsg: (token, id) => ({
     type: 'GET_MSG',
-    payload: http(token).get(`message/${id}?limit=15`),
-  }),
-  newMsg: (token, id) => ({
-    type: 'GET_NEW_MSG',
     payload: http(token).get(`message/${id}?limit=15`),
   }),
   sendMsg: (token, id, data) => ({
@@ -29,5 +21,8 @@ export default {
   nextAll: (token, url) => ({
     type: 'NEXT_ALL_MSG',
     payload: http(token).get(url),
+  }),
+  clear: () => ({
+    type: 'CLEAR_CHAT',
   }),
 };

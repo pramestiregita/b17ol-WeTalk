@@ -5,7 +5,6 @@ const initialState = {
   detailInfo: {},
   isLoading: false,
   detailLoading: false,
-  newLoading: false,
   isError: false,
   isSucces: false,
 };
@@ -34,28 +33,6 @@ export default (state = initialState, action) => {
         pageInfo: action.payload.data.pageInfo,
       };
     }
-    case 'GET_NEW_PENDING': {
-      return {
-        ...state,
-        newLoading: true,
-      };
-    }
-    case 'GET_NEW_REJECTED': {
-      return {
-        ...state,
-        newLoading: false,
-        isError: true,
-      };
-    }
-    case 'GET_NEW_FULFILLED': {
-      return {
-        ...state,
-        newLoading: false,
-        isError: false,
-        data: action.payload.data.data,
-        pageInfo: action.payload.data.pageInfo,
-      };
-    }
     case 'GET_MSG_PENDING': {
       return {
         ...state,
@@ -73,28 +50,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         detailLoading: false,
-        isError: false,
-        detail: action.payload.data.data,
-        detailInfo: action.payload.data.pageInfo,
-      };
-    }
-    case 'GET_NEW_MSG_PENDING': {
-      return {
-        ...state,
-        newLoading: true,
-      };
-    }
-    case 'GET_NEW_MSG_REJECTED': {
-      return {
-        ...state,
-        newLoading: false,
-        isError: true,
-      };
-    }
-    case 'GET_NEW_MSG_FULFILLED': {
-      return {
-        ...state,
-        newLoading: false,
         isError: false,
         detail: action.payload.data.data,
         detailInfo: action.payload.data.pageInfo,
@@ -163,6 +118,14 @@ export default (state = initialState, action) => {
         isError: false,
         data: [...state.data, ...action.payload.data.data],
         pageInfo: action.payload.data.pageInfo,
+      };
+    }
+    case 'CLEAR_CHAT': {
+      return {
+        ...state,
+        detailLoading: true,
+        detail: [],
+        detailInfo: {},
       };
     }
     case 'LOGOUT': {

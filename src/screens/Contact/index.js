@@ -10,6 +10,8 @@ import Spinner from '../../components/Spinner';
 import EmptyData from '../../components/EmptyData';
 
 export default function Contact() {
+  const loading = false;
+
   const {token} = useSelector((state) => state.auth);
   const {isLoading, data, pageInfo} = useSelector((state) => state.friend);
 
@@ -40,6 +42,8 @@ export default function Contact() {
               keyExtractor={(item) => item.id.toString()}
               onEndReached={nextPage}
               onEndReachedThreshold={(0, 5)}
+              refreshing={loading}
+              onRefresh={getData}
             />
           ) : (
             <EmptyData text="There is no contact" />
