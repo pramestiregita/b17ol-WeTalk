@@ -34,7 +34,7 @@ export default function ChatBubble({item}) {
   };
 
   return (
-    <View key={item.id + item.sender.name} style={bubble()}>
+    <View key={item.id.toString().concat(item.sender.name)} style={bubble()}>
       <Text style={styled.content}>{item.content}</Text>
       <Text style={styled.time}>
         {moment(item.createdAt).format('hh:mm A')}

@@ -70,7 +70,9 @@ export default function ChatRoom({route}) {
               inverted
               data={detail}
               renderItem={({item}) => <Bubble item={item} />}
-              keyExtractor={(item) => item.id.toString()}
+              keyExtractor={(item) =>
+                item.id.toString().concat(item.sender.name)
+              }
               onEndReached={nextPage}
               onEndReachedThreshold={(0, 5)}
               refreshing={loading}
