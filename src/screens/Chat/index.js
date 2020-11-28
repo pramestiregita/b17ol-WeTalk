@@ -45,20 +45,18 @@ export default function Chat({navigation}) {
 
   return (
     <View style={styled.parent}>
-      {!isLoading &&
-        (Object.keys(data).length > 0 ? (
-          <FlatList
-            data={data}
-            renderItem={({item}) => <List item={item} />}
-            keyExtractor={(item) => item.id.toString()}
-            onEndReached={nextPage}
-            onEndReachedThreshold={(0, 5)}
-            refreshing={loading}
-            onRefresh={getData}
-          />
-        ) : (
-          <EmptyData text="There is no message" />
-        ))}
+      {!isLoading && Object.keys(data).length > 0 && (
+        <FlatList
+          data={data}
+          renderItem={({item}) => <List item={item} />}
+          keyExtractor={(item) => item.id.toString().concat(item.sender.name)}
+          onEndReached={nextPage}
+          onEndReachedThreshold={(0, 5)}
+          refreshing={loading}
+          onRefresh={getData}
+          ListEmptyComponent={<EmptyData text="There is no message" />}
+        />
+      )}
       <TouchableOpacity
         onPress={() => navigation.navigate('Contact')}
         style={styled.iconWrapper}>
