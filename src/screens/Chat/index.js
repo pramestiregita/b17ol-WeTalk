@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect} from 'react';
-import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RNBootSplash from 'react-native-bootsplash';
@@ -11,7 +11,14 @@ import socket from '../../helpers/socket';
 import color from '../../assets/color';
 
 import List from '../../components/ChatList';
-import EmptyData from '../../components/EmptyData';
+
+const emptyData = () => {
+  return (
+    <View style={styled.emptyData}>
+      <Text>There is no message</Text>
+    </View>
+  );
+};
 
 export default function Chat({navigation}) {
   const loading = false;
@@ -45,7 +52,7 @@ export default function Chat({navigation}) {
 
   return (
     <View style={styled.parent}>
-      {!isLoading && Object.keys(data).length > 0 && (
+      {!isLoading && (
         <FlatList
           data={data}
           renderItem={({item}) => <List item={item} />}
@@ -54,7 +61,7 @@ export default function Chat({navigation}) {
           onEndReachedThreshold={(0, 5)}
           refreshing={loading}
           onRefresh={getData}
-          ListEmptyComponent={<EmptyData text="There is no message" />}
+          ListEmptyComponent={emptyData}
         />
       )}
       <TouchableOpacity
@@ -83,5 +90,11 @@ const styled = StyleSheet.create({
     bottom: 20,
     right: 20,
     elevation: 5,
+  },
+  emptyData: {
+    flex: 1,
+    position: 'relative',
+    alignItems: 'center',
+    marginTop: 20,
   },
 });

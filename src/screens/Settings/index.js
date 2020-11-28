@@ -21,7 +21,10 @@ export default function Settings({navigation}) {
 
   const logout = () => {
     setVisible(true);
-    dispatch({type: 'LOGOUT'});
+    setTimeout(() => {
+      dispatch({type: 'LOGOUT'});
+      setVisible(false);
+    }, 2000);
   };
 
   const list = [
@@ -90,7 +93,7 @@ export default function Settings({navigation}) {
         renderItem={({item}) =>
           item.text === 'Logout' ? (
             <TouchableOpacity
-              onPress={() => logout}
+              onPress={() => logout()}
               key={item.id + item.text}
               style={styled.list}>
               <Icon
