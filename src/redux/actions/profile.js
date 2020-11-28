@@ -6,16 +6,12 @@ export default {
     type: 'GET_PROFILE',
     payload: http(token).get('user/profile'),
   }),
-  setProfile: (token, data) => ({
-    type: 'SET_PROFILE',
-    payload: http(token).patch('user/set-profile', data),
-  }),
   changeName: (token, data) => ({
     type: 'SET_PROFILE',
     payload: http(token).patch('user/set-profile', qs.stringify(data)),
   }),
   changeAva: (token, data) => ({
-    type: 'SET_PROFILE',
+    type: 'SET_AVA',
     payload: http(token).patch('user/update-ava', data),
   }),
 };

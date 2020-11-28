@@ -73,10 +73,8 @@ export default function SetProfile() {
           type: response.type,
         });
 
-        const {value} = await dispatch(profileAction.changeAva(token, form));
-        if (value.data.success) {
-          getData();
-        }
+        await dispatch(profileAction.changeAva(token, form));
+        getData();
       }
     });
   };

@@ -53,6 +53,27 @@ export default (state = initialState, action) => {
         setProfile: true,
       };
     }
+    case 'SET_AVA_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'SET_AVA_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+    case 'SET_AVA_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        isSuccess: true,
+      };
+    }
     case 'LOGOUT': {
       return initialState;
     }
