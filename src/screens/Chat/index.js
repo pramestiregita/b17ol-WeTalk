@@ -24,7 +24,7 @@ export default function Chat({navigation}) {
   const loading = false;
 
   const {token} = useSelector((state) => state.auth);
-  const {data, pageInfo, isLoading} = useSelector((state) => state.message);
+  const {data, pageInfo} = useSelector((state) => state.message);
   const {userId} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
@@ -52,18 +52,16 @@ export default function Chat({navigation}) {
 
   return (
     <View style={styled.parent}>
-      {!isLoading && (
-        <FlatList
-          data={data}
-          renderItem={({item}) => <List item={item} />}
-          keyExtractor={(item) => item.id.toString().concat(item.sender.name)}
-          onEndReached={nextPage}
-          onEndReachedThreshold={(0, 5)}
-          refreshing={loading}
-          onRefresh={getData}
-          ListEmptyComponent={emptyData}
-        />
-      )}
+      <FlatList
+        data={data}
+        renderItem={({item}) => <List item={item} />}
+        keyExtractor={(item) => item.id.toString().concat(item.sender.name)}
+        onEndReached={nextPage}
+        onEndReachedThreshold={(0, 5)}
+        refreshing={loading}
+        onRefresh={getData}
+        ListEmptyComponent={emptyData}
+      />
       <TouchableOpacity
         onPress={() => navigation.navigate('Contact')}
         style={styled.iconWrapper}>
