@@ -3,13 +3,7 @@ import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconMi from 'react-native-vector-icons/MaterialIcons';
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  Keyboard,
-} from 'react-native';
+import {View, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import {Formik} from 'formik';
 
 import styled from './style';
@@ -86,7 +80,6 @@ export default function ChatRoom({route}) {
           onSubmit={(values) => {
             send(values);
             input.current.clear();
-            Keyboard.dismiss();
           }}>
           {({handleBlur, handleChange, handleSubmit, values}) => (
             <View style={styled.footerWrapper}>

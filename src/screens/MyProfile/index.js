@@ -5,6 +5,7 @@ import IconFa from 'react-native-vector-icons/FontAwesome5';
 import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {Formik} from 'formik';
+import * as Yup from 'yup';
 import ImagePicker from 'react-native-image-picker';
 
 import {API_URL, LIMIT_FILE} from '@env';
@@ -17,6 +18,12 @@ import toast from '../../helpers/toast';
 import Modal from '../../components/Modal';
 
 import avatar from '../../assets/avatar.jpg';
+
+const profileSchema = Yup.object().shape({
+  name: Yup.string()
+    .required('Please insert your name')
+    .matches(/^[A-Za-z ]*$/, 'Please enter valid name'),
+});
 
 export default function MyProfile({navigation}) {
   const {token} = useSelector((state) => state.auth);
@@ -168,6 +175,7 @@ export default function MyProfile({navigation}) {
         }}
         height={150}>
         <Formik
+          validationSchema={profileSchema}
           initialValues={{name: data.name}}
           onSubmit={(values) => submit(values)}>
           {({handleBlur, handleChange, handleSubmit, values}) => (

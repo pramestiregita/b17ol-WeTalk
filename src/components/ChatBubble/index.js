@@ -11,9 +11,7 @@ export default function ChatBubble({item}) {
 
   const bubble = () => {
     if (item.senderId === userId) {
-      if (item.content.length < 10) {
-        return [styled.outgoing, styled.xsmall];
-      } else if (item.content.length < 20) {
+      if (item.content.length < 25) {
         return [styled.outgoing, styled.small];
       } else if (item.content.length < 35) {
         return [styled.outgoing, styled.med];
@@ -21,9 +19,7 @@ export default function ChatBubble({item}) {
         return [styled.outgoing, styled.big];
       }
     } else {
-      if (item.content.length < 10) {
-        return [styled.incoming, styled.xsmall];
-      } else if (item.content.length < 20) {
+      if (item.content.length < 25) {
         return [styled.incoming, styled.small];
       } else if (item.content.length < 35) {
         return [styled.incoming, styled.med];
@@ -51,6 +47,7 @@ const styled = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 10,
     alignItems: 'center',
+    alignSelf: 'flex-start',
   },
   outgoing: {
     marginVertical: 5,
@@ -61,21 +58,19 @@ const styled = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-end',
   },
-  xsmall: {
-    width: '30%',
-  },
   small: {
-    width: '50%',
+    minWidth: '40%',
   },
   med: {
-    width: '60%',
+    minWidth: '60%',
   },
   big: {
-    width: '90%',
+    minWidth: '90%',
   },
   content: {
     flex: 1,
     fontSize: 14,
+    width: '100%',
   },
   time: {
     alignSelf: 'flex-end',

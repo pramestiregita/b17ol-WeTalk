@@ -50,8 +50,7 @@ export default function Login() {
               <Text style={styled.title}>Masukkan nomor telepon Anda</Text>
 
               <Text style={styled.text}>
-                WhatsApp akan mengirim SMS untuk memverifikasi nomor telepon
-                Anda.
+                WeTalk akan mengirim SMS untuk memverifikasi nomor telepon Anda.
                 <Text style={styled.link}>
                   {' '}
                   Berapa nomor telepon saya?

@@ -27,7 +27,9 @@ import Modal from '../../components/Modal';
 import add from '../../assets/addpict.png';
 
 const profileSchema = Yup.object().shape({
-  name: Yup.string().required('Please insert your name'),
+  name: Yup.string()
+    .required('Please insert your name')
+    .matches(/^[A-Za-z ]*$/, 'Please enter valid name'),
 });
 
 export default function SetProfile() {
