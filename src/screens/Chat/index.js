@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import RNBootSplash from 'react-native-bootsplash';
 
 import messageAction from '../../redux/actions/message';
+import authAction from '../../redux/actions/auth';
 import socket from '../../helpers/socket';
 
 import color from '../../assets/color';
@@ -24,17 +25,18 @@ export default function Chat({navigation}) {
   const loading = false;
 
   const {token} = useSelector((state) => state.auth);
-  const {data, pageInfo} = useSelector((state) => state.message);
-  const {userId} = useSelector((state) => state.profile);
+  const {data, pageInfo, alertMsg} = useSelector((state) => state.message);
+  const {userId, data: user} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
 
-  const getData = async () => {
-    await dispatch(messageAction.getAll(token));
+  const getData = async (t) => {
+    console.log(t);
+    await dispatch(messageAction.getAll(t));
   };
 
   useEffect(() => {
-    getData();
+    getData(token);
     RNBootSplash.hide({});
     socket.on(userId, () => {
       getData();
@@ -50,8 +52,23 @@ export default function Chat({navigation}) {
     }
   };
 
+  const relogin = async () => {
+    if (alertMsg === 'jwt expired') {
+      const {phoneNumber} = user;
+      const {value} = await dispatch(authAction.login({phoneNumber}));
+      if (value.data.success) {
+        getData(value.data.token);
+      }
+    }
+  };
+
+  useEffect(() => {
+    relogin();
+  }, [alertMsg]);
+
   return (
     <View style={styled.parent}>
+      {/* {console.log({user.phoneNumber})} */}
       <FlatList
         data={data}
         renderItem={({item}) => <List item={item} />}

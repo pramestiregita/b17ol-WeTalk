@@ -7,6 +7,7 @@ const initialState = {
   detailLoading: false,
   isError: false,
   isSucces: false,
+  alertMsg: '',
 };
 
 export default (state = initialState, action) => {
@@ -22,6 +23,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
+        alertMsg: action.payload.response.data.message,
       };
     }
     case 'GET_ALL_FULFILLED': {
@@ -31,6 +33,7 @@ export default (state = initialState, action) => {
         isError: false,
         data: action.payload.data.data,
         pageInfo: action.payload.data.pageInfo,
+        alertMsg: '',
       };
     }
     case 'GET_MSG_PENDING': {
@@ -44,6 +47,7 @@ export default (state = initialState, action) => {
         ...state,
         detailLoading: false,
         isError: true,
+        alertMsg: action.payload.response.data.message,
       };
     }
     case 'GET_MSG_FULFILLED': {
