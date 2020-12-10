@@ -71,9 +71,7 @@ export default function Main() {
                 <HeaderBackButton
                   onPress={() => {
                     navigation.navigate('Chat');
-                    setTimeout(() => {
-                      dispatch(messageAction.clear());
-                    }, 1000);
+                    dispatch(messageAction.clear());
                   }}
                   tintColor="white"
                 />

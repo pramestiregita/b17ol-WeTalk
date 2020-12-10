@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {Spinner} from 'native-base';
 import Modal, {ModalContent} from 'react-native-modals';
 
@@ -10,10 +10,11 @@ export default function index({visible}) {
     <Modal
       modalStyle={styled.parent}
       visible={visible}
-      width={100}
-      height={100}>
+      width={120}
+      height={120}>
       <ModalContent>
         <Spinner color={color.title} />
+        <Text>Loading</Text>
       </ModalContent>
     </Modal>
   );

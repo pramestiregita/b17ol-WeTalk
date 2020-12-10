@@ -24,19 +24,18 @@ const emptyData = () => {
 export default function Chat({navigation}) {
   const loading = false;
 
-  const {token} = useSelector((state) => state.auth);
+  const {token, refreshToken} = useSelector((state) => state.auth);
   const {data, pageInfo, alertMsg} = useSelector((state) => state.message);
-  const {userId, data: user} = useSelector((state) => state.profile);
+  const {userId} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
 
-  const getData = async (t) => {
-    console.log(t);
-    await dispatch(messageAction.getAll(t));
+  const getData = async () => {
+    await dispatch(messageAction.getAll(token));
   };
 
   useEffect(() => {
-    getData(token);
+    getData();
     RNBootSplash.hide({});
     socket.on(userId, () => {
       getData();
@@ -53,12 +52,9 @@ export default function Chat({navigation}) {
   };
 
   const relogin = async () => {
-    if (alertMsg === 'jwt expired') {
-      const {phoneNumber} = user;
-      const {value} = await dispatch(authAction.login({phoneNumber}));
-      if (value.data.success) {
-        getData(value.data.token);
-      }
+    if (alertMsg === 'Unauthorized') {
+      await dispatch(authAction.relogin({refreshToken}));
+      getData();
     }
   };
 
@@ -68,7 +64,6 @@ export default function Chat({navigation}) {
 
   return (
     <View style={styled.parent}>
-      {/* {console.log({user.phoneNumber})} */}
       <FlatList
         data={data}
         renderItem={({item}) => <List item={item} />}

@@ -27,6 +27,7 @@ export default (state = initialState, action) => {
         isError: false,
         isLogin: true,
         token: action.payload.data.token,
+        refreshToken: action.payload.data.refreshToken,
       };
     }
     case 'LOGOUT': {

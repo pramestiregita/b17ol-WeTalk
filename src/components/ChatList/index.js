@@ -1,5 +1,5 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Thumbnail, Text, List, ListItem, Left, Body, Right} from 'native-base';
@@ -8,20 +8,27 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {API_URL} from '@env';
 
+import messageAction from '../../redux/actions/message';
+
 import avatar from '../../assets/avatar.jpg';
 
 export default function ChatList({item}) {
+  const {token} = useSelector((state) => state.auth);
   const {userId} = useSelector((state) => state.profile);
   const friendId =
     item.sender.id !== userId ? item.sender.id : item.recipient.id;
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const seeDetails = async () => {
+    await dispatch(messageAction.getMsg(token, friendId));
+    navigation.navigate('ChatRoom', {id: friendId});
+  };
 
   return (
     <List key={item.id}>
-      <ListItem
-        onPress={() => navigation.navigate('ChatRoom', {id: friendId})}
-        avatar>
+      <ListItem onPress={() => seeDetails()} avatar>
         <Left>
           <TouchableOpacity>
             <Thumbnail

@@ -34,7 +34,6 @@ export default function ChatRoom({route}) {
   };
 
   useEffect(() => {
-    getDetail();
     getFriend();
     socket.on(userId, () => {
       getDetail();
