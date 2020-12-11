@@ -35,7 +35,7 @@ const emptyData = () => {
   );
 };
 
-export default function Chat({navigation}) {
+export default function Chat({navigation, route}) {
   const loading = false;
 
   const {token, refreshToken} = useSelector((state) => state.auth);
@@ -49,12 +49,20 @@ export default function Chat({navigation}) {
   };
 
   useEffect(() => {
+    console.log(route);
     getData();
     relogin();
     RNBootSplash.hide({});
     socket.on(userId, () => {
       getData();
     });
+    socket.on('read' + userId.toString(), () => {
+      getData();
+      console.log('read');
+    });
+    return () => {
+      socket.close();
+    };
   }, []);
 
   useEffect(() => {
@@ -91,8 +99,8 @@ export default function Chat({navigation}) {
   const relogin = async () => {
     if (alertMsg === 'Unauthorized') {
       await dispatch(authAction.relogin({refreshToken}));
-      getData();
     }
+    getData();
   };
 
   useEffect(() => {

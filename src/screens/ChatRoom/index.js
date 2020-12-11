@@ -39,8 +39,14 @@ export default function ChatRoom({route}) {
   useEffect(() => {
     getList();
     getFriend();
+    console.log('satu');
     socket.on(userId, () => {
       getDetail();
+      console.log('dua');
+    });
+    socket.on('read' + userId.toString(), () => {
+      getDetail();
+      console.log('read');
     });
     return () => {
       socket.close();
@@ -50,12 +56,14 @@ export default function ChatRoom({route}) {
   const send = async (body) => {
     await dispatch(messageAction.sendMsg(token, friendId, body));
     getDetail();
-    getList();
+    console.log('tiga');
+    // getList();
   };
 
   const nextPage = async () => {
     if (detailInfo.nextLink) {
       await dispatch(messageAction.next(token, detailInfo.nextLink));
+      console.log('empat');
     }
   };
 
