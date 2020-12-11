@@ -59,7 +59,7 @@ export default (state = initialState, action) => {
         detailInfo: action.payload.data.pageInfo,
       };
     }
-    case 'SEND_NEW_MSG_PENDING': {
+    case 'SEND_MSG_PENDING': {
       return {
         ...state,
         isLoading: true,

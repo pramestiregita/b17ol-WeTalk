@@ -4,6 +4,7 @@ import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import RNBootSplash from 'react-native-bootsplash';
+import PushNotification from 'react-native-push-notification';
 
 import messageAction from '../../redux/actions/message';
 import authAction from '../../redux/actions/auth';
@@ -12,6 +13,34 @@ import socket from '../../helpers/socket';
 import color from '../../assets/color';
 
 import List from '../../components/ChatList';
+
+PushNotification.createChannel(
+  {
+    channelId: 'notif',
+    channelName: 'Notif channel',
+    channelDescription: 'Test',
+    soundName: 'default',
+    importance: 4,
+    vibrate: true,
+  },
+  (created) => console.log(`createChannel returned '${created}'`),
+);
+
+PushNotification.configure({
+  onRegister: (token) => {
+    console.log('Token: ', JSON.stringify(token));
+  },
+  onNotification: (notif) => {
+    PushNotification.localNotification({
+      channelId: 'notif',
+      title: notif.title,
+      message: notif.message,
+    });
+  },
+  onRegistrationError: (err) => {
+    console.error(err.message, err);
+  },
+});
 
 const emptyData = () => {
   return (
@@ -35,6 +64,7 @@ export default function Chat({navigation}) {
   };
 
   useEffect(() => {
+    relogin();
     getData();
     RNBootSplash.hide({});
     socket.on(userId, () => {
@@ -59,7 +89,10 @@ export default function Chat({navigation}) {
   };
 
   useEffect(() => {
-    relogin();
+    if (alertMsg === 'Unauthorized') {
+      dispatch(authAction.relogin({refreshToken}));
+      getData();
+    }
   }, [alertMsg]);
 
   return (

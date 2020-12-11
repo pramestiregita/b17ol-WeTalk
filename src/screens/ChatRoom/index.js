@@ -26,6 +26,9 @@ export default function ChatRoom({route}) {
 
   const getDetail = async () => {
     await dispatch(messageAction.getMsg(token, friendId));
+  };
+
+  const getList = async () => {
     await dispatch(messageAction.getAll(token));
   };
 
@@ -34,6 +37,7 @@ export default function ChatRoom({route}) {
   };
 
   useEffect(() => {
+    getList();
     getFriend();
     socket.on(userId, () => {
       getDetail();
@@ -46,6 +50,7 @@ export default function ChatRoom({route}) {
   const send = async (body) => {
     await dispatch(messageAction.sendMsg(token, friendId, body));
     getDetail();
+    getList();
   };
 
   const nextPage = async () => {

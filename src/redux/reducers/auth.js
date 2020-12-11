@@ -30,6 +30,28 @@ export default (state = initialState, action) => {
         refreshToken: action.payload.data.refreshToken,
       };
     }
+    case 'RELOGIN_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'RELOGIN_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+    case 'RELOGIN_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        isLogin: true,
+        token: action.payload.data.token,
+      };
+    }
     case 'LOGOUT': {
       return initialState;
     }

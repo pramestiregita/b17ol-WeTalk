@@ -2,7 +2,16 @@ import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {Thumbnail, Text, List, ListItem, Left, Body, Right} from 'native-base';
+import {
+  Thumbnail,
+  Text,
+  List,
+  ListItem,
+  Left,
+  Body,
+  Right,
+  View,
+} from 'native-base';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -11,6 +20,7 @@ import {API_URL} from '@env';
 import messageAction from '../../redux/actions/message';
 
 import avatar from '../../assets/avatar.jpg';
+import color from '../../assets/color';
 
 export default function ChatList({item}) {
   const {token} = useSelector((state) => state.auth);
@@ -60,7 +70,15 @@ export default function ChatList({item}) {
         <Right style={styled.info}>
           <Text note>{moment(item.createdAt).format('hh:mm A')}</Text>
           {item.sender.id === userId ? (
-            <Icon name="check" size={20} color="grey" />
+            item.isRead ? (
+              <Icon name="done-all" size={20} color={color.linkColor} />
+            ) : (
+              <Icon name="done-all" size={20} color="grey" />
+            )
+          ) : !item.isRead ? (
+            <View style={styled.badge}>
+              <Text />
+            </View>
           ) : null}
         </Right>
       </ListItem>
@@ -80,5 +98,11 @@ const styled = StyleSheet.create({
   },
   info: {
     justifyContent: 'space-between',
+  },
+  badge: {
+    backgroundColor: color.btnColor,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
   },
 });

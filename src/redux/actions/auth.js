@@ -7,7 +7,7 @@ export default {
     payload: http().post('auth/login', qs.stringify(data)),
   }),
   relogin: (data) => ({
-    type: 'LOGIN',
+    type: 'RELOGIN',
     payload: http().post('auth/refresh-token', qs.stringify(data)),
   }),
 };
