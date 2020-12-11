@@ -28,6 +28,7 @@ export default (state = initialState, action) => {
         isLogin: true,
         token: action.payload.data.token,
         refreshToken: action.payload.data.refreshToken,
+        alertMsg: '',
       };
     }
     case 'RELOGIN_PENDING': {
@@ -50,6 +51,7 @@ export default (state = initialState, action) => {
         isError: false,
         isLogin: true,
         token: action.payload.data.token,
+        alertMsg: '',
       };
     }
     case 'LOGOUT': {

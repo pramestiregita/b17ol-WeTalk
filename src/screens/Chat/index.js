@@ -49,8 +49,8 @@ export default function Chat({navigation}) {
   };
 
   useEffect(() => {
-    relogin();
     getData();
+    relogin();
     RNBootSplash.hide({});
     socket.on(userId, () => {
       getData();
