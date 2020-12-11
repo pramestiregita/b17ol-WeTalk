@@ -14,4 +14,8 @@ export default {
     type: 'SET_AVA',
     payload: http(token).patch('user/update-ava', data),
   }),
+  addDeviceToken: (token, data) => ({
+    type: 'ADD_DEVICE_TOKEN',
+    payload: http(token).patch('user/add-device-token', qs.stringify(data)),
+  }),
 };

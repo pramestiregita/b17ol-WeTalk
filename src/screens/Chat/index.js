@@ -8,6 +8,7 @@ import PushNotification from 'react-native-push-notification';
 
 import messageAction from '../../redux/actions/message';
 import authAction from '../../redux/actions/auth';
+import profileAction from '../../redux/actions/profile';
 import socket from '../../helpers/socket';
 
 import color from '../../assets/color';
@@ -26,22 +27,6 @@ PushNotification.createChannel(
   (created) => console.log(`createChannel returned '${created}'`),
 );
 
-PushNotification.configure({
-  onRegister: (token) => {
-    console.log('Token: ', JSON.stringify(token));
-  },
-  onNotification: (notif) => {
-    PushNotification.localNotification({
-      channelId: 'notif',
-      title: notif.title,
-      message: notif.message,
-    });
-  },
-  onRegistrationError: (err) => {
-    console.error(err.message, err);
-  },
-});
-
 const emptyData = () => {
   return (
     <View style={styled.emptyData}>
@@ -55,7 +40,7 @@ export default function Chat({navigation}) {
 
   const {token, refreshToken} = useSelector((state) => state.auth);
   const {data, pageInfo, alertMsg} = useSelector((state) => state.message);
-  const {userId} = useSelector((state) => state.profile);
+  const {userId, data: user} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
 
@@ -70,9 +55,31 @@ export default function Chat({navigation}) {
     socket.on(userId, () => {
       getData();
     });
-    return () => {
-      socket.close();
-    };
+  }, []);
+
+  useEffect(() => {
+    PushNotification.configure({
+      onRegister: async (tokenDevice) => {
+        const {deviceToken} = user;
+        const {token: devToken} = tokenDevice;
+
+        if (deviceToken !== devToken) {
+          const value = {token: devToken};
+          await dispatch(profileAction.addDeviceToken(token, value));
+          await dispatch(profileAction.getProfile(token));
+        }
+      },
+      onNotification: (notif) => {
+        PushNotification.localNotification({
+          channelId: 'notif',
+          title: notif.title,
+          message: notif.message,
+        });
+      },
+      onRegistrationError: (err) => {
+        console.error(err.message, err);
+      },
+    });
   }, []);
 
   const nextPage = async () => {

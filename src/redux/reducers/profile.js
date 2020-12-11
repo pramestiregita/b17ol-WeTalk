@@ -70,7 +70,28 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
+        isError: false,
+        isSuccess: true,
+      };
+    }
+    case 'ADD_DEVICE_TOKEN_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'ADD_DEVICE_TOKEN_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
         isError: true,
+      };
+    }
+    case 'ADD_DEVICE_TOKEN_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
         isSuccess: true,
       };
     }
