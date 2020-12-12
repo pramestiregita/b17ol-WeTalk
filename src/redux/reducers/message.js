@@ -57,6 +57,7 @@ export default (state = initialState, action) => {
         isError: false,
         detail: action.payload.data.data,
         detailInfo: action.payload.data.pageInfo,
+        alertMsg: '',
       };
     }
     case 'SEND_MSG_PENDING': {

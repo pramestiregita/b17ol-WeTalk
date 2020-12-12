@@ -5,6 +5,7 @@ const initialState = {
   isLoading: false,
   isError: false,
   isSuccess: false,
+  alertMsg: '',
 };
 
 export default (state = initialState, action) => {
@@ -20,6 +21,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
+        alertMsg: action.payload.response.data.message,
       };
     }
     case 'GET_PROFILE_FULFILLED': {
@@ -29,6 +31,7 @@ export default (state = initialState, action) => {
         isError: false,
         data: action.payload.data.data,
         userId: action.payload.data.data.id,
+        alertMsg: '',
       };
     }
     case 'SET_PROFILE_PENDING': {

@@ -1,4 +1,5 @@
-import React, {useRef} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFa from 'react-native-vector-icons/FontAwesome5';
@@ -13,6 +14,7 @@ import {API_URL, LIMIT_FILE} from '@env';
 import styled from './style';
 import color from '../../assets/color';
 import profileAction from '../../redux/actions/profile';
+import authAction from '../../redux/actions/auth';
 
 import toast from '../../helpers/toast';
 import Modal from '../../components/Modal';
@@ -26,20 +28,46 @@ const profileSchema = Yup.object().shape({
 });
 
 export default function MyProfile({navigation}) {
-  const {token} = useSelector((state) => state.auth);
-  const {data, isLoading} = useSelector((state) => state.profile);
+  const {token, refreshToken} = useSelector((state) => state.auth);
+  const {data, isLoading, alertMsg} = useSelector((state) => state.profile);
 
   const nameSheet = useRef();
   const dispatch = useDispatch();
 
   const getData = async () => {
-    await dispatch(profileAction.getProfile(token));
+    try {
+      await dispatch(profileAction.getProfile(token));
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
-  const submit = async (body) => {
-    nameSheet.current.close();
-    await dispatch(profileAction.changeName(token, body));
+  const relogin = async () => {
+    try {
+      await dispatch(authAction.relogin({refreshToken}));
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  useEffect(() => {
     getData();
+  }, [token]);
+
+  useEffect(() => {
+    if (alertMsg === 'Unauthorized') {
+      relogin();
+    }
+  }, [alertMsg]);
+
+  const submit = async (body) => {
+    try {
+      nameSheet.current.close();
+      await dispatch(profileAction.changeName(token, body));
+      getData();
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   const selectImage = async () => {
@@ -70,8 +98,12 @@ export default function MyProfile({navigation}) {
           type: response.type,
         });
 
-        await dispatch(profileAction.changeAva(token, form));
-        getData();
+        try {
+          await dispatch(profileAction.changeAva(token, form));
+          getData();
+        } catch (e) {
+          console.log(e.message);
+        }
       }
     });
   };

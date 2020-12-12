@@ -26,6 +26,14 @@ export default function Login() {
 
   const dispatch = useDispatch();
 
+  const doLogin = async (values) => {
+    try {
+      await dispatch(authAction.login(values));
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   return (
     <View style={styled.parent}>
       <Modal visible={isLoading} />
@@ -35,7 +43,7 @@ export default function Login() {
         validationSchema={loginSchema}
         onSubmit={(values) => {
           Keyboard.dismiss();
-          dispatch(authAction.login(values));
+          doLogin(values);
         }}>
         {({
           handleBlur,

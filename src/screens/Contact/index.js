@@ -3,6 +3,7 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {View, FlatList, StyleSheet} from 'react-native';
 
+import authAction from '../../redux/actions/auth';
 import friendAction from '../../redux/actions/friend';
 
 import List from '../../components/ContactList';
@@ -12,18 +13,38 @@ import EmptyData from '../../components/EmptyData';
 export default function Contact() {
   const loading = false;
 
-  const {token} = useSelector((state) => state.auth);
-  const {isLoading, data, pageInfo} = useSelector((state) => state.friend);
+  const {token, refreshToken} = useSelector((state) => state.auth);
+  const {isLoading, data, pageInfo, alertMsg} = useSelector(
+    (state) => state.friend,
+  );
 
   const dispatch = useDispatch();
 
   const getData = async () => {
-    await dispatch(friendAction.getContact(token));
+    try {
+      await dispatch(friendAction.getContact(token));
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const relogin = async () => {
+    try {
+      await dispatch(authAction.relogin({refreshToken}));
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [token]);
+
+  useEffect(() => {
+    if (alertMsg === 'Unauthorized') {
+      relogin();
+    }
+  }, [alertMsg]);
 
   const nextPage = async () => {
     if (pageInfo.nextLink) {

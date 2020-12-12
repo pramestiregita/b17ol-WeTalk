@@ -3,6 +3,7 @@ const initialState = {
   isLogin: false,
   isLoading: false,
   isError: false,
+  isSuccess: false,
 };
 
 export default (state = initialState, action) => {
@@ -50,6 +51,7 @@ export default (state = initialState, action) => {
         isLoading: false,
         isError: false,
         isLogin: true,
+        isSuccess: true,
         token: action.payload.data.token,
         alertMsg: '',
       };

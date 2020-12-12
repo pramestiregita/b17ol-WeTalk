@@ -25,28 +25,34 @@ export default function ChatRoom({route}) {
   const input = useRef();
 
   const getDetail = async () => {
-    await dispatch(messageAction.getMsg(token, friendId));
+    try {
+      await dispatch(messageAction.getMsg(token, friendId));
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   const getList = async () => {
-    await dispatch(messageAction.getAll(token));
+    try {
+      await dispatch(messageAction.getAll(token));
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   const getFriend = async () => {
-    await dispatch(friendAction.getFriend(token, friendId));
+    try {
+      await dispatch(friendAction.getFriend(token, friendId));
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   useEffect(() => {
     getList();
     getFriend();
-    console.log('satu');
     socket.on(userId, () => {
       getDetail();
-      console.log('dua');
-    });
-    socket.on('read' + userId.toString(), () => {
-      getDetail();
-      console.log('read');
     });
     return () => {
       socket.close();
@@ -54,16 +60,22 @@ export default function ChatRoom({route}) {
   }, []);
 
   const send = async (body) => {
-    await dispatch(messageAction.sendMsg(token, friendId, body));
-    getDetail();
-    console.log('tiga');
-    // getList();
+    try {
+      await dispatch(messageAction.sendMsg(token, friendId, body));
+      getDetail();
+      getList();
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   const nextPage = async () => {
     if (detailInfo.nextLink) {
-      await dispatch(messageAction.next(token, detailInfo.nextLink));
-      console.log('empat');
+      try {
+        await dispatch(messageAction.next(token, detailInfo.nextLink));
+      } catch (e) {
+        console.log(e.message);
+      }
     }
   };
 

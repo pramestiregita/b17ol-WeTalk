@@ -4,6 +4,7 @@ const initialState = {
   pageInfo: {},
   isLoading: false,
   isError: false,
+  alertMsg: '',
 };
 
 export default (state = initialState, action) => {
@@ -40,6 +41,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
+        alertMsg: action.payload.response.data.message,
       };
     }
     case 'GET_CONTACT_FULFILLED': {
@@ -49,6 +51,7 @@ export default (state = initialState, action) => {
         isError: false,
         data: action.payload.data.data,
         pageInfo: action.payload.data.pageInfo,
+        alertMsg: '',
       };
     }
     case 'SEARCH_PENDING': {
@@ -62,6 +65,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
+        alertMsg: action.payload.response.data.message,
       };
     }
     case 'SEARCH_FULFILLED': {
@@ -71,6 +75,7 @@ export default (state = initialState, action) => {
         isError: false,
         data: action.payload.data.data,
         pageInfo: action.payload.data.pageInfo,
+        alertMsg: '',
       };
     }
     case 'NEXT_CONTACT_PENDING': {
@@ -84,6 +89,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: true,
+        alertMsg: action.payload.response.data.message,
       };
     }
     case 'NEXT_CONTACT_FULFILLED': {
@@ -93,6 +99,7 @@ export default (state = initialState, action) => {
         isError: false,
         data: [...state.data, ...action.payload.data.data],
         pageInfo: action.payload.data.pageInfo,
+        alertMsg: '',
       };
     }
     case 'LOGOUT': {

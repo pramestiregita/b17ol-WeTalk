@@ -39,7 +39,11 @@ export default function SetProfile() {
   const dispatch = useDispatch();
 
   const getData = async () => {
-    await dispatch(profileAction.getProfile(token));
+    try {
+      await dispatch(profileAction.getProfile(token));
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   useEffect(() => {
@@ -75,16 +79,24 @@ export default function SetProfile() {
           type: response.type,
         });
 
-        await dispatch(profileAction.changeAva(token, form));
-        getData();
+        try {
+          await dispatch(profileAction.changeAva(token, form));
+          getData();
+        } catch (e) {
+          console.log(e.message);
+        }
       }
     });
   };
 
   const onSubmit = async (body) => {
-    Keyboard.dismiss();
-    await dispatch(profileAction.changeName(token, body));
-    getData();
+    try {
+      Keyboard.dismiss();
+      await dispatch(profileAction.changeName(token, body));
+      getData();
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   return (

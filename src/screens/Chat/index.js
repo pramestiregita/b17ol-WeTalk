@@ -45,20 +45,35 @@ export default function Chat({navigation, route}) {
   const dispatch = useDispatch();
 
   const getData = async () => {
-    await dispatch(messageAction.getAll(token));
+    try {
+      await dispatch(messageAction.getAll(token));
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  const relogin = async () => {
+    try {
+      await dispatch(authAction.relogin({refreshToken}));
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   useEffect(() => {
-    console.log(route);
     getData();
-    relogin();
+  }, [token]);
+
+  useEffect(() => {
+    if (alertMsg === 'Unauthorized') {
+      relogin();
+    }
+  }, [alertMsg]);
+
+  useEffect(() => {
     RNBootSplash.hide({});
     socket.on(userId, () => {
       getData();
-    });
-    socket.on('read' + userId.toString(), () => {
-      getData();
-      console.log('read');
     });
     return () => {
       socket.close();
@@ -92,23 +107,13 @@ export default function Chat({navigation, route}) {
 
   const nextPage = async () => {
     if (pageInfo.nextLink) {
-      await dispatch(messageAction.nextAll(token, pageInfo.nextLink));
+      try {
+        await dispatch(messageAction.nextAll(token, pageInfo.nextLink));
+      } catch (e) {
+        console.log(e.message);
+      }
     }
   };
-
-  const relogin = async () => {
-    if (alertMsg === 'Unauthorized') {
-      await dispatch(authAction.relogin({refreshToken}));
-    }
-    getData();
-  };
-
-  useEffect(() => {
-    if (alertMsg === 'Unauthorized') {
-      dispatch(authAction.relogin({refreshToken}));
-      getData();
-    }
-  }, [alertMsg]);
 
   return (
     <View style={styled.parent}>

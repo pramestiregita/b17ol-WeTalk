@@ -22,9 +22,13 @@ export default function ChatList({item}) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const seeDetails = async () => {
-    await dispatch(messageAction.getMsg(token, friendId));
-    navigation.navigate('ChatRoom', {id: friendId});
+  const seeDetails = async (t = token) => {
+    try {
+      await dispatch(messageAction.getMsg(t, friendId));
+      navigation.navigate('ChatRoom', {id: friendId});
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   return (
