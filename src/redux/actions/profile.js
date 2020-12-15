@@ -18,4 +18,8 @@ export default {
     type: 'ADD_DEVICE_TOKEN',
     payload: http(token).patch('user/add-device-token', qs.stringify(data)),
   }),
+  deleteDeviceToken: (token) => ({
+    type: 'DELETE_DEVICE_TOKEN',
+    payload: http(token).patch('user/delete-device-token'),
+  }),
 };

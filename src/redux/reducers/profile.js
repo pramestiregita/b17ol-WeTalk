@@ -98,6 +98,27 @@ export default (state = initialState, action) => {
         isSuccess: true,
       };
     }
+    case 'DELETE_DEVICE_TOKEN_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'DELETE_DEVICE_TOKEN_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
+    }
+    case 'DELETE_DEVICE_TOKEN_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        isSuccess: true,
+      };
+    }
     case 'LOGOUT': {
       return initialState;
     }

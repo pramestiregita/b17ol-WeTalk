@@ -9,22 +9,28 @@ import {API_URL} from '@env';
 import styled from './style';
 import color from '../../assets/color';
 
+import profileAction from '../../redux/actions/profile';
+
 import Modal from '../../components/Modal';
 
 import avatar from '../../assets/avatar.jpg';
 
 export default function Settings({navigation}) {
   const [visible, setVisible] = useState(false);
-  const {data} = useSelector((state) => state.profile);
+  const {token} = useSelector((state) => state.auth);
+  const {data, isLoading} = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
 
-  const logout = () => {
-    setVisible(true);
-    setTimeout(() => {
+  const logout = async () => {
+    try {
+      setVisible(true);
+      await dispatch(profileAction.deleteDeviceToken(token));
       dispatch({type: 'LOGOUT'});
       setVisible(false);
-    }, 2000);
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   const list = [
